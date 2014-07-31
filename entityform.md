@@ -1,0 +1,116 @@
+#EntityForm
+
+[![Build Status](https://travis-ci.org/asgardphp/entityform.svg?branch=master)](https://travis-ci.org/asgardphp/entityform)
+
+Entityform help you generate forms from entities. It creates the form fields corresponding to all the entity properties. Entityform is a sub-class of [Form](docs/form).
+
+- [Usage in Asgard Framework](#usage-asgard)
+- [Usage outside Asgard](#usage-outside)
+- [Add entity relations](#relations)
+- [Save the entity](#save)
+- [Get the entity](#get)
+- [EntityFieldSolver](#solver)
+
+<a name="usage-asgard"></a>
+##In Asgard Framework
+The advantage of using the form service is that it will provides the Form with all the necessary dependencies:
+
+	$request = \Asgard\Http\Request::CreateFromGlobals();
+	$entity  = new Article;
+	$container->make('form', [
+		$entity, #required
+		[ #optional
+			'action'  => 'form.php',
+			'enctype' => 'multipart/form-data',
+			'attrs'   => [
+				'class' => 'formClass'
+			]
+		],
+		$request, #optional, Asgard can provide the form with the current request
+	]);
+
+In a controller (or any class using the view ContainerAware), $container is available through $this->getContainer(). You can also access it by \Asgard\Container\Container::singleton().
+
+<a name="usage-outside"></a>
+##Outside Asgard
+Here you will have to provide the dependencies yourself (see the next section):
+
+	$entityFieldsSolver = new \Asgard\Entityform\EntityFieldsSolver;
+	$request            = \Asgard\Http\Request::CreateFromGlobals();
+	$entity             = new Article;
+	$form = new \Asgard\Entityform\Entityform(
+		$entity, #required
+		[ #optional
+			'action'  => 'form.php',
+			'enctype' => 'multipart/form-data',
+			'attrs'   => [
+				'class' => 'formClass'
+			]
+		],
+		$request, #optional, if not request is provided the form will automatically use \Asgard\Http\Request::createFromGlobals()
+		$entityFieldsSolver #optional, Asgard can automatically retrieve an instance of EntityFieldsSolver
+	);
+
+<a name="relations"></a>
+##Add entity relations
+
+If the entity form was created from an entity having a "comments" relation, you embed it in the form with:
+
+	$form->addRelation('comments');
+
+This will add a field for selecting comments related to the entity. Works for all kinds of relations, "one" and "many".
+
+<a name="save"></a>
+##Save the entity
+
+To save the entity, simple do:
+
+	$form->save();
+
+If there is a validation error, it will throw the exception \Asgard\Form\FormException. Refer to the [Form documentation](docs/form) to know how to handle exceptions and errors.
+
+<a name="get"></a>
+##Get the entity
+
+	$form->getEntity();
+
+<a name="solver"></a>
+##EntityFieldSolver
+
+In order to tell the entityform how to create fields from entity properties, you can use the Asgard\Entityform\EntityFieldsSolver class. By default it already handles Text, Longtext, Double, Integer, Email, Boolean, Date, Datetime, File entity properties (all in Asgard\Entity\Properties\\). If the EntityFieldsSolver does not know what type of field to create for a specific property, it will return a \Asgard\Form\Fields\TextField field by default.
+
+To extend the entityFieldsSolver add a callback which will return a form field object:
+
+	$cb = function(\Asgard\Entity\Property $property) {
+		if(get_class($property) == 'Asgard\Entity\Properties\DateProperty')
+			return new MyOwnDateField;
+	};
+	$fieldsSolver->add($cb);
+
+For entity properties with multiple values, use:
+
+	$cb = function(\Asgard\Entity\Property $property) {
+		if(get_class($property) == 'Asgard\Entity\Properties\DateProperty')
+			return new \Asgard\Form\DynamicGroup;
+	};
+	$fieldsSolver->addMultiple($cb);
+
+If the callback returns null it will be ignored.
+
+You can also nest other solvers:
+
+	$anotherFieldsSolver->addSolver($fieldsSolver);
+
+If $anotherFieldsSolver cannot solve the field, it will ask to the nested solvers.
+
+To solve a field from an entity property:
+
+	$form->solve($entityDefinition->getProperty('title'));
+
+To get the EntityFieldSolver from a form:
+
+	$fieldsSolver = $form->getEntityFieldsSolver();
+
+To set the EntityFieldsSolver for a form:
+
+	$form->addEntityFieldsSolver($cb);
