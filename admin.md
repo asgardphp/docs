@@ -163,7 +163,7 @@ Navigation bar:
 
 	$container['adminMenu']->add([
 		'label' => __('News'),
-		'link' => $chain->app['resolver']->url_for(['News\Controllers\NewsAdminController', 'index']),
+		'link' => $chain->container['resolver']->url_for(['News\Controllers\NewsAdminController', 'index']),
 	], '0.');
 
 The last parameter gives the position of the item. This item will be in the first sub-menu of the navigation bar (Content). '0', would have replaced the "Content" item, while '0.' adds the item into the "Content" menu.
@@ -172,7 +172,7 @@ Home menu:
 
 	$container['adminMenu']->addHome([
 		'img' => $request->url->to('news/icon.svg'),
-		'link' => $chain->app['resolver']->url_for(['News\Controllers\NewsAdminController', 'index']),
+		'link' => $chain->container['resolver']->url_for(['News\Controllers\NewsAdminController', 'index']),
 		'title' => __('News'),
 		'description' => __('All the news.')
 	]);

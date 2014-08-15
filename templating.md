@@ -1,6 +1,6 @@
 #Templating
 
-[![Build Status](https://travis-ci.org/asgardphp/orm.svg?branch=master)](https://travis-ci.org/asgardphp/orm)
+[![Build Status](https://travis-ci.org/asgardphp/templating.svg?branch=master)](https://travis-ci.org/asgardphp/templating)
 
 Templating is a simple package which provides interfaces to build your own templating system. It also provides a PHP templating system and the Viewable class.
 

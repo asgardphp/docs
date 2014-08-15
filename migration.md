@@ -23,7 +23,7 @@ For example:
 	<?php
 	class News extends \Asgard\Migration\DBMigration {
 		public function up() {
-			$this->app['schema']->create('news', function($table) {
+			$this->container['schema']->create('news', function($table) {
 				$table->add('id', 'int(11)')
 					->autoincrement()
 					->primary();	
@@ -33,7 +33,7 @@ For example:
 		}
 		
 		public function down() {
-			$this->app['schema']->drop('news');
+			$this->container['schema']->drop('news');
 		}
 	}
 
@@ -125,14 +125,14 @@ Rollback up to a specific migration:
 
 Create a new migration:
 
-	$up = "$this->app['schema']->create('news', function($table) {
+	$up = "$this->container['schema']->create('news', function($table) {
 				$table->add('id', 'int(11)')
 					->autoincrement()
 					->primary();	
 				$table->add('text', 'varchar(255)');
 				$table->add('content', 'text');
 			});";
-	$down = "$this->app['schema']->drop('news');";
+	$down = "$this->container['schema']->drop('news');";
 	$migrationsManager->create($up, $down, 'Migrationname', $class='\Asgard\Migration\Migration');
 
 <a name="tracker"></a>

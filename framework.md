@@ -1,22 +1,22 @@
 #Framework
 
-[![Build Status](https://travis-ci.org/asgardphp/validation.svg?branch=master)](https://travis-ci.org/asgardphp/asgard)
+[![Build Status](https://travis-ci.org/asgardphp/asgard.svg?branch=master)](https://travis-ci.org/asgardphp/asgard)
 
-- [Installation](#installation)
+- [New project](#new-project)
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
 - [Bundles](#bundles)
 - [Services](#services)
 - [Testing](#testing)
 
-<a name="installation"></a>
-##Installation
+<a name="new-project"></a>
+##New project
 
 The installation is very straightforward. Open a console, go to your web directory and run:
 
-	composer create-project asgardphp/starter [project]
+	composer create-project asgardphp/starter [folder] --stability dev
 
-Don't forgert to replace [project] with the name of your new project.
+Don't forget to replace [folder] with the location of your new project.
 
 The command creates a project, installs Asgard, its dependencies and initialize the configuration file. From there you can already start working on your application.
 
@@ -131,7 +131,7 @@ A service is an object with specific responsibilities, as part of the applicatio
 
 	cache				Asgard\Cache\Cache
 	config				Asgard\Config\Config
-	console				Asgard\Db\DB
+	console				Asgard\Console\Application
 	cookiemanager		Asgard\Http\CookieManager
 	db					Asgard\Db\DB
 	email				Asgard\Email\SwiftEmail
@@ -156,11 +156,15 @@ A service is an object with specific responsibilities, as part of the applicatio
 	validator			Asgard\Validation\Validator
 	widgetsmanager		Asgard\Form\WidgetsManager
 
+See what services your project contains with:
+
+	php console services
+
 Due to dependency injection, you can modify or even replace any of this service with your own.
 
-Services are available through the services container, often called container. In a controller, it is accessible through:
+Services are available through the services container. In a controller, it is accessible through:
 
-	$db = $this->app['db'];
+	$db = $this->container['db'];
 
 The container can also be accessed through a singleton although this should be avoided:
 

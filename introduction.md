@@ -12,6 +12,6 @@ Before installing Asgard, you will need to make sure you have installed the foll
 
 * PHP >= 5.4
 * Composer ([download](https://getcomposer.org/download/))
-* A database system as MySQL if you intend to use a database or the ORM
+* A database system such as MySQL if you intend to use a database or the ORM
 * Git if you intend to install a module like Admin
 * phpunit for testing

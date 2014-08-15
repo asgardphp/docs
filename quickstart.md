@@ -32,7 +32,7 @@ If you encounter any trouble, [please let us know](https://github.com/asgardphp/
 ##Installation
 Open the console, go to your web directory, and run:
 
-	composer create-project asgard/starter asgard --stability dev
+	composer create-project asgard/starter [folder] --stability dev
 
 This will create a new project in the directory "asgard", retrieve all its dependencies and initialize the configuration file all by itself.
 

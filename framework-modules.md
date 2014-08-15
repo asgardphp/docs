@@ -1,6 +1,6 @@
 #Modules
 
-Modules are an alternative to composer dependencies. They can be used to quickly extend your application with new features and still be able to modify them as you wish.
+Modules can be used to quickly extend your application with new features that you want to customize. For example you can install the news module which contains default entities and controllers, and directly start modifying it to your specific needs, while starting from a clean existing base.
 
 - [Installing a module](#install)
 - [Structure](#structure)
@@ -12,7 +12,7 @@ To install a module, run:
 
 	php console [source] --migrate --update-composer
 
-[source] must be a git repository, e.g. git@github.com:asgardbundles/admin.git
+[source] must be a git repository, e.g. git@github.com:asgardmodules/admin.git
 
 If the module has any module dependency, it will install it before. Then this command will download the module and copy its folders app/, migrations/, tests/, config/ web/ to your project.
 
@@ -27,11 +27,13 @@ The typical structure of a module is as following:
 
 * app/: including bundles (moved to the application app/ folder)
 * tests/: including test files (moved to the application tests/ folder)
-* migrations/: including migration files (moved to the application migrations/ folder). [Do not forget the migrations.json file]().
+* migrations/: including migration files (moved to the application migrations/ folder). [Do not forget the migrations.json file](docs/migration).
 * config/: including configuration files (moved to the application config/ folder)
 * web/: including web assets (moved to the application web/ folder)
 * asgard.json: detailed below
 * composer.json: detailed below
+
+As indicated next to them, these files are published in your application upon installation.
 
 ###asgard.json
 asgard.json contains the module name:
@@ -45,8 +47,8 @@ And module dependencies (which will be installed with the module):
 	{
 		"name": "asgard/news",
 		"require": {
-			"asgard/admin": "git@github.com:asgardbundles/admin.git",
-	        "asgard/wysiwyg": "git@github.com:asgardbundles/wysiwyg.git"
+			"asgard/admin": "git@github.com:asgardmodules/admin.git",
+	        "asgard/wysiwyg": "git@github.com:asgardmodules/wysiwyg.git"
 		}
 	}
 
