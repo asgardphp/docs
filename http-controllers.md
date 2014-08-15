@@ -24,9 +24,9 @@ Here we have only one action called indexAction, which receives the request as a
 ##Routing
 
 ###Creating routes
-You can use the resolver to route requests to spefific actions. In Asgard, the resolver object is available through the services container:
+You can use the resolver to route requests to specific actions. In Asgard, the resolver object is available through the services container:
 
-	$resolver = $app['resolver'];
+	$resolver = $container['resolver'];
 
 To create a new route, open app app/start.php and add for example:
 
@@ -85,7 +85,7 @@ To access the parameter from the action:
 ##Errors and exceptions
 
 ###404
-To return a 404 errorm use the following line inside an action:
+To return a 404 error use the following line inside an action:
 
 	$this->notFound();
 
@@ -101,7 +101,7 @@ HttpKernel will return a 404 HTTP response.
 
 If you want to modify exceptions responses, use the hook Asgard.Http.Exception.[ExceptionClass]:
 
-	$app['hooks']->hook('Asgard.Http.Exception.Asgard\Controller\ControllerException', function($chain, $e, &$response) {
+	$container['hooks']->hook('Asgard.Http.Exception.Asgard\Controller\ControllerException', function($chain, $e, &$response) {
 		if($e->getCode() == 404)
 			$response->setContent('Sorry, page not found.');
 	})
@@ -117,21 +117,21 @@ To create a new filter:
 
 To add a filter to all controllers:
 
-	$app['httpKernel']->filterAll($filter);
+	$container['httpKernel']->filterAll($filter);
 
 To add a filter to all actions in a controller:
 
-	$app['httpKernel']->filterController('Controller', $filter);
+	$container['httpKernel']->filterController('Controller', $filter);
 
 To add a filter to a specific action:
 
-	$app['httpKernel']->filterController('Controller:index', $filter);
+	$container['httpKernel']->filterController('Controller:index', $filter);
 
 To add a filter based on the route:
 
-	$app['httpKernel']->filterRoute('products/index', $filter);
+	$container['httpKernel']->filterRoute('products/index', $filter);
 
-All "before" methods of filters will be exeuted before the action. They can return a response object, in which case the action will not be executed. For example:
+All "before" methods of filters will be executed before the action. They can return a response object, in which case the action will not be executed. For example:
 
 	public function before(\Asgard\Http\Controller $controller) {
 		return (new \Asgard\Http\Response())->setCode(400);
@@ -179,7 +179,7 @@ and return it in the action:
 
 	#bundle/Controllers/ProductController.php
 	public function indexAction(\Asgard\Http\Request $request) {
-		return new MyView('index.template', array('header'=>'Products'));
+		return new MyView('index.template', ['header'=>'Products']);
 	}
 
-The controller will return a reponse with the result of the view as its body.
+The controller will return a response with the result of the view as its body.

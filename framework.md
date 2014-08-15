@@ -12,7 +12,7 @@
 <a name="installation"></a>
 ##Installation
 
-The installation is very straighforward. Open a console, go to your web directory and run:
+The installation is very straightforward. Open a console, go to your web directory and run:
 
 	composer create-project asgardphp/starter [project]
 
@@ -46,7 +46,7 @@ Configuration files concerning a specific environment must end with _ and the na
 <a name="project-structure"></a>
 ##Project Structure
 
-After installation, an Asgard project contains the fllowing directories:
+After installation, an Asgard project contains the following directories:
 
 	app/			The application source-code
 		General/	Default bundle
@@ -97,22 +97,22 @@ Bundle.php contains a class called Bundle which extends \Asgard\Core\BundleLoade
 	namespace MyBundle;
 
 	class Bundle extends \Asgard\Core\BundleLoader {
-		public function buildApp($app) {
+		public function buildApp(container) {
 			// ...
 		}
 
-		public function run($app) {
-			parent::run($app);
+		public function run(container) {
+			parent::run(container);
 
 			// ...
 		}
 	}
 
-The method buildApp($app) is used to create the [application services container](docs/container). Here, add all your services to the container.
+The method buildApp(container) is used to create the [application services container](docs/container). Here, add all your services to the container.
 
-The method run($app) is used to bootstrap your bundle. Put here the code that needs to be executed during the loading of the application.
+The method run(container) is used to bootstrap your bundle. Put here the code that needs to be executed during the loading of the application.
 
-The parent run method automatically loads your bundle controllers, translations, commands and hooks so if you want to keep this behavior, don't remove the line "parent::run($app);".
+The parent run method automatically loads your bundle controllers, translations, commands and hooks so if you want to keep this behavior, don't remove the line "parent::run(container);".
 
 You can also override the following methods:
 
@@ -127,7 +127,7 @@ The last two are only called when the application is in console mode.
 <a name="services"></a>
 ##Services
 
-A service is an object with specific responsabilities, as part of the application. Asgard provides some services by default:
+A service is an object with specific responsibilities, as part of the application. Asgard provides some services by default:
 
 	cache				Asgard\Cache\Cache
 	config				Asgard\Config\Config
@@ -158,7 +158,7 @@ A service is an object with specific responsabilities, as part of the applicatio
 
 Due to dependency injection, you can modify or even replace any of this service with your own.
 
-Services are available through the services container, often called $app. In a controller, it is accessible through:
+Services are available through the services container, often called container. In a controller, it is accessible through:
 
 	$db = $this->app['db'];
 

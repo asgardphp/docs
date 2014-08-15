@@ -31,9 +31,9 @@ MyCommand class
 Console script:
 
 	$command = new MyCommand; #extends Asgard\Console\Command
-	$application = new MyApplication('MyApp', 5.6, new \Asgard\Container\Container); #extends Asgard\Console\Application
+	containerlication = new MyApplication('MyApp', 5.6, new \Asgard\Container\Container); #extends Asgard\Console\Application
 	#application constructor parameters are optional
-	$application->add($command);
+	containerlication->add($command);
 
 Command:
 

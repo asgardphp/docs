@@ -27,7 +27,7 @@ In the entity definition method
 
 * When an entity has the ORMBehavior, the relations are validated along with the entity properties.
 
-* And it adds additional methods as showned below.
+* And it adds additional methods as shown below.
 
 <a name="static"></a>
 ##Static Methods

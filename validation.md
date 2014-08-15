@@ -10,17 +10,17 @@
 
 <a name="validator"></a>
 ##Validator
-###Instantiation in Asgard Framework
+###Usage in the Asgard Framework
 
 	#rulesRegistry instance
-	$rulesRegistry = $app['rulesRegistry'];
+	$rulesRegistry = $container['rulesRegistry'];
 
 	#validator instance
-	$valiadtor = $app->make('validator');
+	$validator = $container->make('validator');
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
-$app is usually available as a parameter, an object attribute or through Asgard\Container\Container::instance();
-
-###Instantiation outside Asgard Framework
+###Usage outside the Asgard Framework
 
 	use Asgard\Validation\Validator;
 	use Asgard\Validation\RulesRegistry;
@@ -28,19 +28,19 @@ $app is usually available as a parameter, an object attribute or through Asgard\
 	$validator = new Validator();
 	$validator->setRegistry($rulesRegistry);
 
-Instantiating the rulesRegistry is optional. If not, the validator will automatically retrieve a RulesRegistry instance.
+Instantiating the rulesRegistry is optional. If not, the validator will automatically use the RulesRegistry singleton.
 
 ###Adding rules
 Adding multiple rules at once:
 
-	$validator->rules(array(
+	$validator->rules([
 		'min' => 5,
 		'max' => 10,
-	));
+	]);
 
 If you do not give any parameter, it defaults to true, for example:
 
-	$validator->rules(array('required'));
+	$validator->rules(['required']);
 	#or chaining:
 	$validator->min(5)->max(10);
 
@@ -53,7 +53,7 @@ Sometimes you validate arrays and need to use specific rules for some attributes
 
 Adding multiple rules at once for an attribute:
 
-	$validator->attribute('attr', array('min' => 5, 'max' => 10));
+	$validator->attribute('attr', ['min' => 5, 'max' => 10]);
 	#chaining:
 	$validator->attribute('attr')->min(5)->max(10);
 
@@ -64,8 +64,8 @@ Using a new validator for an attribute:
 
 For a nested attribute, use dots:
 
-	$validator->attribute('attr.subattr.subsubattr', array('min' => 5, 'max' => 10));
-	$validator->valid(array('attr'=>array('subattr'=>array('subsubattr'=>7)))); #returns true
+	$validator->attribute('attr.subattr.subsubattr', ['min' => 5, 'max' => 10]);
+	$validator->valid(['attr'=>['subattr'=>['subsubattr'=>7]]]); #returns true
 
 ###Testing for input validity
 	Validator::min(5)->valid(3); #returns false, below 5
@@ -74,13 +74,13 @@ For a nested attribute, use dots:
 With attributes:
 
 	$v = Validator::attribute('attr')->min(5);
-	$v->valid(array('attr'=>2)); #returns false
-	$v->valid(array('attr'=>7)); #returns true
+	$v->valid(['attr'=>2]); #returns false
+	$v->valid(['attr'=>7]); #returns true
 
 ###Validating an array of inputs
 If you want to validate all elements of an array:
 
-	Validator::ruleEach('min', 5)->valid(array(4,5,6,7,8)); #returns false because of 4
+	Validator::ruleEach('min', 5)->valid([4,5,6,7,8]); #returns false because of 4
 
 By using rule instead of ruleEach, it would try to compare the array itself with 5.
 
@@ -117,16 +117,16 @@ Because if the input is empty and not required, it is not be checked against any
 
 However you may sometimes consider other types of inputs as empty. For example an empty array. In order to do that, use isNull:
 
-	Validation::isNull(function($arr) { return count($arr)==0; })->valid(array()); #returns true, because the input is empty and not required
-	Validation::contains(1)->valid(array()); #returns false
+	Validation::isNull(function($arr) { return count($arr)==0; })->valid([]); #returns true, because the input is empty and not required
+	Validation::contains(1)->valid([]); #returns false
 
 Sometimes the requirement depends on conditions. For example, a payment may be required if the amount is over 400.
 
-	$v = Validator::attribute('payment', array('required' => function($input, $parent, $validator) {
+	$v = Validator::attribute('payment', ['required' => function($input, $parent, $validator) {
 		return $parent->attribute('amount') >= 400;
-	}));
-	$v->valid(array('amount'=>300)); #true
-	$v->valid(array('amount'=>500)); #false
+	}]);
+	$v->valid(['amount'=>300]); #true
+	$v->valid(['amount'=>500]); #false
 
 ###Getting the error report
 
@@ -179,7 +179,7 @@ To navigate through the report:
 
 In case you need to build your own report from differences sources, set an attribute report:
 
-	$attrReport = new Report(array('min' => 'attr is to high.'));
+	$attrReport = new Report(['min' => 'attr is to high.']);
 	$report->attribute('attr', $attrReport);
 
 To get all nested attributes reports:
@@ -194,10 +194,10 @@ If a validator has multiple rules with the same name, the report will add an inc
 
 	Validator::contains('a')->contains('b')->errors('c')->errors();
 	# returns
-	array(
+	[
 		'contains' => '"c" must contain "a".',
 		'contains-1' => '"c" must contain "b".',
-	)
+	]
 
 To access a nested attribute, use dots:
 
@@ -209,19 +209,19 @@ To access a nested attribute, use dots:
 ###Custom messages
 You can specify one or multiple messages for a validator rules:
 
-	$validator->ruleMessages(array(
+	$validator->ruleMessages([
 		'min' => 'Must be over :min!',
 		'max' => 'Must be below :max!',
-	));
+	]);
 	#or
 	$validator->ruleMessage('min', 'Must be over :min!');
 
 Or specify a message for rules in the RulesRegitry:
 
-	$registry->messages(array(
+	$registry->messages([
 		'min' => 'Must be over :min!',
 		'max' => 'Must be below :max!',
-	));
+	]);
 	#or
 	$registry->message('min', 'Must be over :min!');
 
@@ -256,7 +256,7 @@ All rules receive the raw input and the parent input bag. You can use the input 
 	//..
 
 The sign ^ is used to go to the parent, and go down the tree with the list of attributes separated with a dot.
-For example, with the input array('password'=>'abc', 'confirm'=>'zyx'), and validating attribute "password", the previous function will access to the value of the "confirm" attribute.
+For example, with the input ['password'=>'abc', 'confirm'=>'zyx'], and validating attribute "password", the previous function will access to the value of the "confirm" attribute.
 
 You can check that an attribute exists with:
 
@@ -321,7 +321,7 @@ If a rule is not found, it will throw an exception.
 
 **Each**: each attribute of the input must be valid with the validator passed as parameter
 
-	Validator::each(v::min(5))->valid(array(4, 5, 6, 7)) #returns false because of 4
+	Validator::each(v::min(5))->valid([4, 5, 6, 7]) #returns false because of 4
 
 **Email**: the input must be an email address
 

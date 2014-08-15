@@ -4,38 +4,47 @@
 
 If you have ever used an event manager, you will find the Hooks component very similar. With the HooksManager you can create hooks, on which you can hook callbacks to be executed when the hooks are triggered.
 
-- [Using HooksManager](#using)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
+- [Create a hook](#create)
+- [Trigger a hook](#trigger)
 - [Executing callbacks before and after hooks](#executing)
 - [Filters](#filters)
 - [The HooksChain Object](#hookschain)
 
-<a name="install"></a>
-##Using HooksManager
-To get a new instance of HooksManager use:
+<a name="usage-asgard"></a>
+##Usage in the Asgard Framework
 
-	$hm = new HooksManager();
+	$hm = $container['hooks'];
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
-In an Asgard project, you can use the service: $app['hooks']
+<a name="usage-outside"></a>
+##Usage outside the Asgard Framework
 
-Then to hook a function, use:
+	$hm = new \Asgard\Hook\HooksManager;
+
+<a name="create"></a>
+##Create a hook
 
 	$hm->hook('name_of_hook', function($chain, $param1) {
 		// ...
 	});
 
-The first parameter is always a HooksChain object. The next ones are passed when the hook is triggered.
+The first parameter is always a \Asgard\Hook\HooksChain object. The next ones are passed when the hook is triggered.
 
-Now, here is how you trigger a hook:
+<a name="trigger"></a>
+##Trigger a hook
 
-	$hm->trigger('name_of_hook', array($param));
+	$hm->trigger('name_of_hook', [$param]);
 
 If you want to execute your own function when calling trigger, use the last argument:
 
-	$hm->trigger('name_of_hook', array($param), function($chain, $param) {
+	$hm->trigger('name_of_hook', [$param], function($chain, $param) {
 		// ...
 	});
 
-<a name="install"></a>
+<a name="executing"></a>
 ##Executing callbacks before and after hooks
 To execute functions before a hook:
 
@@ -56,7 +65,7 @@ Hooks can be used as filters when parameters are passed by reference
 	$hm->hook('name_of_hook', function($chain, &$param) {
 		$param = 123;
 	});
-	$hm->trigger('name_of_hook', array(&$param));
+	$hm->trigger('name_of_hook', [&$param]);
 
 <a name="install"></a>
 ##The HooksChain object
@@ -70,7 +79,7 @@ The function calling the stop method will be the last one to be executed.
 
 To know how many functions have been executed in a hook:
 
-	$hm->trigger('name_of_hook', array($param), null, $chain);
+	$hm->trigger('name_of_hook', [$param], null, $chain);
 	$count = $chain->executed;
 
 Here we provide a reference to retrieve the chain object and its executed property.

@@ -117,7 +117,7 @@ You access the url through the request:
 
 ###Get the response HTTP code
 
-	$respnse->getCode();
+	$response->getCode();
 
 ###Get the response headers:
 

@@ -4,20 +4,20 @@
 
 Entityform help you generate forms from entities. It creates the form fields corresponding to all the entity properties. Entityform is a sub-class of [Form](docs/form).
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outside Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [Add entity relations](#relations)
 - [Save the entity](#save)
 - [Get the entity](#get)
 - [EntityFieldSolver](#solver)
 
 <a name="usage-asgard"></a>
-##In Asgard Framework
+##Usage in the Asgard Framework
 The advantage of using the form service is that it will provides the Form with all the necessary dependencies:
 
 	$request = \Asgard\Http\Request::CreateFromGlobals();
 	$entity  = new Article;
-	$container->make('form', [
+	$container->make('entityForm', [
 		$entity, #required
 		[ #optional
 			'action'  => 'form.php',
@@ -28,11 +28,11 @@ The advantage of using the form service is that it will provides the Form with a
 		],
 		$request, #optional, Asgard can provide the form with the current request
 	]);
-
-In a controller (or any class using the view ContainerAware), $container is available through $this->getContainer(). You can also access it by \Asgard\Container\Container::singleton().
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-outside"></a>
-##Outside Asgard
+##Usage outside the Asgard Framework
 Here you will have to provide the dependencies yourself (see the next section):
 
 	$entityFieldsSolver = new \Asgard\Entityform\EntityFieldsSolver;

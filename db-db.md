@@ -2,14 +2,14 @@
 
 The DB class lets you connect and query the database.
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outside Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [Query object](#query)
 - [Last inserted id](#id)
 - [Transactions](#transactions)
 
 <a name="usage-asgard"></a>
-##Usage in Asgard Framework
+##Usage in the Asgard Framework
 
 ###Configuration
 In config/database.yml:
@@ -22,14 +22,14 @@ In config/database.yml:
 	  prefix:
 	  driver: mysql #this line is optional and defaults to "mysql"
 
-###Instance
+###Service
 
-	$db = $app['db'];
+	$db = $container['db'];
 
-$app is usually available as a parameter, an object attribute or through Asgard\Container\Container::instance();
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-asgard"></a>
-##Usage outside Asgard Framework
+##Usage outside the Asgard Framework
 
 ###Configuration
 

@@ -2,16 +2,29 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/form.svg?branch=master)](https://travis-ci.org/asgardphp/form)
 
-Easy to build and show, remember inputs, automatic building for entities, automatic inputs processing, validation, integrated csrf protection, ..
+The Form library makes it very easy to build forms, render them, remember inputs after submission and automatically process it, validate and protected from CSRF attacks.
 
--creation
--..
--examples
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
+- [Form dependencies](#dependencies)
+- [Form options](#options)
+- [HTTP Methods](#http-methods)
+- [Fields](#fields)
+- [Groups and Forms](#groups)
+- [Save and Validation](#validation)
+- [CSRF Protection](#csrf)
+- [Form data](#data)
+- [Rendering](#rendering)
+- [Managing widgets](#managing-widgets)
+- [Form dependencies](#dependencies)
+- [Examples](#examples)
 
-##Creation in Asgard Framework
+<a name="usage-asgard"></a>
+##Usage in the Asgard Framework
+
 The advantage of using the form service is that it will provides the Form with all the necessary dependencies:
 
-	$app->make('form', [
+	$container->make('form', [
 		'name', #name (optional)
 		[ #params (optional)
 			'action'  => 'form.php',
@@ -29,7 +42,9 @@ The advantage of using the form service is that it will provides the Form with a
 
 In a controller (or any class using the view ContainerAware), $container is available through $this->getContainer(). You can also access it by \Asgard\Container\Container::singleton().
 
-##Creation outside Asgard
+<a name="usage-outside"></a>
+##Usage outside the Asgard Framework
+
 Here you will have to provide the dependencies yourself (see the next section):
 
 	$form = new \Asgard\Form\Form(
@@ -48,14 +63,10 @@ Here you will have to provide the dependencies yourself (see the next section):
 		]
 	);
 
-##Parameters
+*If no enctype is provided, the form will automatically use "multipart/form-data" if it contains files*
 
-To access or modify a form parameters:
-
-	$param = $form->getParam('action');
-	$form->setParam('action', $action);
-
-##Dependencies
+<a name="dependencies"></a>
+##Form dependencies
 
 ###Request
 
@@ -65,43 +76,217 @@ To access or modify a form parameters:
 
 	$form->setTranslator(new \Symfony\Component\Translation\Translator('en'));
 
-###Services container or App
+###Services container
 
-	$form->setApp(new \Asgard\Container\Container);
+	$form->setContainer(new \Asgard\Container\Container);
 
-##Usage
+The services container might be necessary for some fields or widgets.
 
-###Form HTTP Method
+<a name="options"></a>
+##Form options
 
-By default the form gets its inputs from POST requests, but if you want to make a form that works with GET inputs:
+To access or modify a form parameters:
+
+	$param = $form->getOption('action');
+	$form->setOption('action', $action);
+
+Some common parameters are:
+
+- action (e.g. /url/to/page)
+- enctype (e.g. multipart/form-data)
+
+<a name="http-method"></a>
+##Form HTTP Method
+
+By default the form gets its inputs from POST requests, but if you want to make a form that works with GET inputs only:
 
 	$form->setMethod('get');
 
-##Groups
-A Group is a group of fields. For example you may have a group for the shipping address fields and another group with the billing address fields.
+<a name="fields"></a>
+##Fields
+
+A field is a single input of the form. All fields extend the \Asgard\Form\Field class. [Here is a list](#list-of-fields) of all the available fields at the moment.
+
+###Validation
+
+To add specific validation rules to a field, use the 'validation' option:
+
+	$form['field'] = new \Asgard\Form\Fields\TextField(['validation'=>[
+		'minlength' => 5,
+		'maxlength' => 5,
+	]]);
+
+The validation rules are detailed in the [validation documentation](docs/validation).
+
+###Field default value
+
+To set a default value for a field, use the 'default' option:
+
+	$form['field'] = new \Asgard\Form\Fields\TextField(['default'=>'placeholder']);
+
+###Render a field
+
+Fields use widgets to be rendered. Each type of field uses a default widget but you can sometimes use a different one. See below in the list of fields for different ways to render a field.
+
+To render a field with the default widget though, use:
+
+	echo $form['field']->def();
+
+###Widgets
+
+Widgets are identified by a short name such as "text", "password", "select", etc. and are called when rendering a field like:
+
+	echo $form['field']->text();
+
+"text" being the name of the widget we want to use to render the field.
+
+By default, the Form will look for the corresponding widget in \Asgard\Form\Widgets. [But it is possible to manage what widgets are available](#managing-widgets).
+
+###Field label
+
+To show the label of a field:
+
+	echo $form['field']->label();
+
+Or the whole label tag:
+
+	echo $form['field']->labelTag();
+
+<a name="list-of-fields"></a>
+###List of Fields
+
+**boolean**
+
+	$form['field'] = new \Asgard\Form\Fields\BooleanField;
+
+displays a checkbox.
+
+**country**
+
+	$form['field'] = new \Asgard\Form\Fields\BooleanField;
+
+displays a select field with a list of all countries.
+
+**csrf**
+
+	$form['field'] = new \Asgard\Form\Fields\CSRFField;
+
+adds a hidden field to the form to prevent CSRF attack.
+
+**date**
+
+	$form['field'] = new \Asgard\Form\Fields\DateField;
+
+Render three select fields (day/month/year):
+
+	$form['field']->def();
+	#or
+	$form['field']->date();
+
+Render text field:
+
+	$form['field']->text();
+
+**datetime**
+
+	$form['field'] = new \Asgard\Form\Fields\DatetimeField;
+
+Render six select fields (second/minute/hour/day/month/year):
+
+	$form['field']->def();
+	#or
+	$form['field']->datetime();
+
+Render text field:
+
+	$form['field']->text();
+
+**time**
+
+	$form['field'] = new \Asgard\Form\Fields\TimeField;
+
+Render three select fields (second/minute/hour):
+
+	$form['field']->def();
+	#or
+	$form['field']->time();
+
+Render text field:
+
+	$form['field']->text();
+
+**day**
+
+	$form['field'] = new \Asgard\Form\Fields\DayField;
+
+adds a single select field with days from 1 to 31.
+
+**file**
+
+	$form['field'] = new \Asgard\Form\Fields\FileField;
+
+adds a file field.
+
+**hidden**
+
+	$form['field'] = new \Asgard\Form\Fields\HiddenField;
+
+adds an hidden field to the form.
+
+**month**
+
+	$form['field'] = new \Asgard\Form\Fields\MonthField;
+
+adds a single select field with months from 1 to 12.
+
+**multipleselect**
+
+	$form['field'] = new \Asgard\Form\Fields\SelectField(['choices'=>['bob', 'joe', 'david']);
+
+Render multiple select:
+
+	$form['field']->def();
+	#or
+	$form['field']->multipleselect();
+
+Render checkboxes:
+
+	$form['field']->checkboxes();
+	#or
+	foreach($form['field']->getCheckboxes() as $checkbox)
+		echo $checkbox->label().': '.$checkbox;
+
+**select**
+
+	$form['field'] = new \Asgard\Form\Fields\SelectField(['choices'=>['bob', 'joe', 'david']);
+
+adds a single select field.
+
+**text**
+
+	$form['field'] = new \Asgard\Form\Fields\TextField;
+
+**year**
+
+	$form['field'] = new \Asgard\Form\Fields\YearField;
+
+adds a single select field with the last 50 years.
+
+<a name="groups"></a>
+##Groups and Forms
+A Group is a group of fields. For example you may have a group for the shipping address fields and another group with the billing address fields. You may also have groups containing other groups. A form itself is a group which contains groups and fields.
 
 To know how many fields or sub-groups a Group or a Form has:
 
 	$count = $group->size();
 
-##Fields
+Forms and groups are built like arrays. To add a field:
 
-Forms are built like arrays. To add a field:
-
-	$form['title'] = new Fields\TextField;
+	$form['title'] = new \Asgard\Form\Fields\TextField;
 
 To get its value after the form was submitted:
 
-	$value = $form['title']->getValue();
-
-###List of Fields
-
-###Field validation
-
-print a field and label
-
-###Groups of fields:
-A Group is a group of fields. For example you may have a group for the shipping address fields and another group with the billing address fields.
+	$value = $form['title']->value();
 
 You can add a whole group to a form:
 
@@ -112,11 +297,11 @@ You can add a whole group to a form:
 		'zipcode' => new Fields\TextField
 	];
 
-In the form, the array will be converted to a Group object. You can access a group's fields like a form:
+In the form, the array will be converted to a \Asgard\Form\Group object. You can access a group's fields like a form:
 
-	$value = $form['address']['street']->getValue();
+	$value = $form['address']['street']->value();
 
-A Form is a Group, so you can also embed forms in another:
+As a form is also a Group, you can also embed forms:
 
 	$personForm = new \Asgard\Form\Form;
 	$personForm['firstname'] = new Fields\TextField;
@@ -126,9 +311,16 @@ A Form is a Group, so you can also embed forms in another:
 
 And access fields like:
 
-	$form['person']['firstname']->getValue();
+	$form['person']['firstname']->value();
 
-###Save and Validation
+You can as well loop through a group or a form fields:
+
+	foreach($group as $field) {
+		// do something with the field
+	}
+
+<a name="validation"></a>
+##Save and Validation
 
 To check that a form was sent:
 
@@ -162,16 +354,20 @@ In case of an error, an exception will be raised:
 		//...
 	}
 
-If all is valid, it will execute the form's doSave() method, which by default does not do anything. It will also try to save each nested-form.
+If all is valid, it will execute the form's doSave() method, which by default does nothing. It will also try to save each nested-form.
 
-However you can create your own classes that extend the Form class and override the "doSave" method or hook "save" (see [Hook documentation](docs/hook)):
+However you can create your own classes that extend the Form class and override the "doSave" method or use a callback:
 
-	$form->hook('save', function($form) {
-		// do something with form
+	$form->setPreSaveCallback(function($form) {
+		// do something before validation
+	});
+	$form->setSaveCallback(function($form) {
+		// do something to save the form
 	});
 	$form->save()
 
-###CSRF Protection
+<a name="csrf"></a>
+##CSRF Protection
 
 To enable CSRF protection for a form:
 
@@ -181,9 +377,10 @@ To disable it:
 
 	$form->csrf(false);
 
-The error will be available through $form->getGeneralErrors() or $form['_csrf_token'].
+If the form will be invalid if sent without the CSRF token. The error will be available through $form->getGeneralErrors() or $form['_csrf_token']->error().
 
-###Form Data
+<a name="data"></a>
+##Form Data
 
 Get data from a form after it has been sent:
 
@@ -193,93 +390,81 @@ Reset data:
 
 	$form->reset();
 
-Set data:
+Set data manually:
 
 	$form->setData(['title' => 'abc']); 
 
+<a name="rendering"></a>
 ##Rendering a form
 
-	echo $form->open($params=[]); #prints the opening tag. Params will override the parameters passed to the form instance
-	//...
+	echo $form->open($params=[]); #prints the opening tag. Params will override the parameters passed to the form instancefd
+
+	//render fields e.g. $form['title']->def();
+
 	echo form->submit('Send'); #prints a simple submit button with text "Send"
 	echo $form->close(); #prints the closing tag and an hidden input for csrf if enabled
 
+<a name="managing-widgets"></a>
+##Managing widgets
 
+###Instance
 
-##Widgets
-widgetsmanager
+In the Asgard framework, you can use the service:
 
-fields
-groups
-group/form size
+	$wm = $container['widgetsManager'];
 
-----------------------------------
+Otherwise, you can also access a form widgetsManager through:
 
-Group
+	$wm = $form->getWidgetsManager();
 
-constructor
-dependencies
-	getTranslator
-	getRequest
-	getApp
-General
-	name
-	setName
-	size
-	hasFile
-Widgets
-	getWidget
-	getWidgetsManager
-	setWidgetsManager
-Rendering
-	render
-Save et validation
-	save
-	isValid
-	sent
-	errors
-Fields
-	remove
-	get
-	add
-	has
-	resetFields
-	fields
-	addFields
-Data
-	reset
-	setData
-	data
-array/iterator
+###Register a widget
 
-------------
+	$wm->setWidget('text', 'MyClasses\Widgets\TextWidget');
 
-Report
-	->all()
+###Register a namespace
 
+	$wm->addNamespace('MyClasses\Widgets');
 
+When using an unknown widget, the widgets manager will try to look for the widget in all registered namespaces. If the class MyClasses\Widgets\TextWidget exists, it will be used to render the field.
+
+###Example in Asgard
+
+	$container['widgetsManager']->setWidget('text', 'MyClasses\Widgets\TextWidget');
+
+	$form = $container->make('form');
+	$form['title'] = new \Asgard\Fields\TextField;
+	echo $form['title']->text();
+
+###Example in standalone form
+
+	$form = new \Asgard\Form\Form;
+	$form->getWidgetsManager()->setWidget('text', 'MyClasses\Widgets\TextWidget');
+	$form['title'] = new \Asgard\Fields\TextField;
+	echo $form['title']->text();
+
+<a name="examples"></a>
 ##Examples
 
-###User registration###
+###User registration
 
 Building the form:
 
-	$form = $app->make('form', ['user']);
+	$form = $container->make('form', ['user']);
+	#or
+	$form = new \Asgard\Form\Form('user');
+
 	$form['username'] = new \Asgard\Form\Fields\TextField(['validation'=>'required']);
 	$form['password'] = new \Asgard\Form\Fields\TextField(['validation'=>'required', 'widget' => 'password']);
 
-	$form->setSaveCallback(function($form) {
-		$username = $form['username']->value();
-		$password = $form['password']->value();
-		// save in database..
-	});
-
 	if($form->sent()) {
-		try {
-			$form->save();
-			echo 'Good!';
-		} catch(\Asgard\Form\FormException $e) {
-			echo 'Bad..';
+		if(!($errors = $form->errors())) {
+			$username = $form['username']->value();
+			$password = $form['password']->value();
+			// save in database..
+			echo 'Good :)';
+		}
+		else {
+			echo 'Bad :(';
 			foreach($e->errors() as $error)
 				echo "\n".$error;
 		}
@@ -289,5 +474,5 @@ Showing the form:
 
 	echo $form->open();
 	echo $form['username']->def();
-	echo $form['password']->def();
+	echo $form['password']->password();
 	echo $form->close();

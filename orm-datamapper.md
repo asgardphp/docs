@@ -9,8 +9,8 @@
 	$db = new \Asgard\Db\DB(['host'=>'localhost', 'user'=>'root', 'password'=>'', 'database'=>'asgard']);
 	$locale = 'en';
 	$prefix = '';
-	$app = new \Asgard\Container\Container;
-	$dm = new \Asgard\Orm\DataMapper($db, $locale, $prefix, $app);
+	container = new \Asgard\Container\Container;
+	$dm = new \Asgard\Orm\DataMapper($db, $locale, $prefix, container);
 
 Only the first argument is required for DataMapper __construct.
 

@@ -4,8 +4,8 @@
 
 Data is package for key-value database storage.
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outside Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [Fetch a value](#fetch)
 - [Store a value](#store)
 - [Delete a key](#delete)
@@ -13,14 +13,14 @@ Data is package for key-value database storage.
 - [Working with different data types](#types)
 
 <a name="usage-asgard"></a>
-##Usage in Asgard Framework
+##Usage in the Asgard Framework
 
-	$data = $app['data'];
+	$data = $container['data'];
 	
-$app is usually available as a parameter, an object attribute or through Asgard\Container\Container::instance();
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-outside"></a>
-##Usage outside Asgard
+##Usage outside the Asgard Framework
 
 	$config = [
 		'host' => 'localhost',

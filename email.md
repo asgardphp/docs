@@ -2,14 +2,14 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/email.svg?branch=master)](https://travis-ci.org/asgardphp/email)
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outside Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [Send an email](#send)
 - [Attach files](#files)
 - [Attach images](#images)
 
 <a name="usage-asgard"></a>
-##Usage in Asgard
+##Usage in the Asgard Framework
 
 ###Configuration
 
@@ -38,10 +38,12 @@ In a configuration file, in config/, add:
 
 ###Service
 
-	$email = $app['email'];
+	$email = $container['email'];
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-outside"></a>
-##Usage outside Asgard
+##Usage outside the Asgard Framework
 
 ###Configuration
 

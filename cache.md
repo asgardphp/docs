@@ -4,21 +4,21 @@
 
 Asgard\Cache is a wrapper for the doctrine cache package. It provides a few additionnal features.
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outside Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [Array implementation](#array)
 - [Default result](#default)
 - [NullCache](#nullcache)
 - [Commands](#commands)
 
 <a name="usage-asgard"></a>
-##Usage in Asgard Framework
+##Usage in the Asgard Framework
 The cache is available through the service:
 
-	$cache = $app['cache'];
+	$cache = $container['cache'];
 
 <a name="usage-outside"></a>
-##Usage outside Asgard
+##Usage outside the Asgard Framework
 
 	$cache = new \Asgard\Cache\Cache(new \Doctrine\Common\Cache\Cache());
 

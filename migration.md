@@ -44,7 +44,7 @@ This folder contains two json files:
  * migrations.json contains all active migrations
  * tracking.json contains all active migration statuses
 
-You should always use the same migrations.json file accross multiple environments, although you can use different tracking.json files to track migrations statuses.
+You should always use the same migrations.json file across multiple environments, although you can use different tracking.json files to track migrations statuses.
 
 Examples:
 
@@ -69,13 +69,13 @@ The Data migration must be in a file called Data.php at migrations/Data.php.
 <a name="lifecycle"></a>
 ##MigrationsManager
 
-###Usage in Asgard
+###Usage in the Asgard Framework
 
 	$migrationsManager = $container['migrationsManager'];
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
-$container is a \Asgard\Container\Container object. You can access it from a ContainerAware object with $obj->getContainer() or through \Asgard\Container\Container::singleton();
-
-###Usage outside Asgard
+###Usage outside the Asgard Framework
 
 	$migrationsManager = new \Asgard\Migration\MigrationsManager('/path/to/migrations/', $container /*optional*/);
 
@@ -140,13 +140,15 @@ Create a new migration:
 
 The tracker is helpful to track the statuses of your migrations.
 
-###Usage in Asgard
+###Usage in the Asgard Framework
 
 	$tracker = $container['migrationsManager']->getTracker();
 
-###Usage outside Asgard
+###Usage outside the Asgard Framework
 
 	$tracker = $migrationsManager->getTracker();
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 ###Methods
 
@@ -154,7 +156,7 @@ Get all migrations:
 
 	$tracker->getList();
 
-Get all unexecuted migrations:
+Get all non-executed migrations:
 
 	$tracker->getDownList();
 

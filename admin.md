@@ -104,7 +104,7 @@ If you already have an entity that you want to be administrable, you can create 
 		}
 		
 		public function formConfigure($entity) {
-			$form = $this->container->make('adminEntityForm', [$entity, $this]);
+			$form = $this->$container->make('adminEntityForm', [$entity, $this]);
 			
 			return $form;
 		}

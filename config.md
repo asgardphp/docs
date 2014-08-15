@@ -4,21 +4,21 @@
 
 The Config package helps you manage the configuration of your application.
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outisde Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [methods](#methods)
 - [structure](#structure)
 - [Commands](#commands)
 
 <a name="usage-asgard"></a>
-##Usage in Asgard Framework
+##Usage in the Asgard Framework
 
-	$config = $app['config'];
+	$config = $container['config'];
 
-$app is usually available as a parameter, an object attribute or through Asgard\Container\Container::instance();
+container is usually available as a parameter, an object attribute or through Asgard\Container\Container::instance();
 
 <a name="usage-outside"></a>
-##Usage outside Asgard
+##Usage outside the Asgard Framework
 
 	$config = new \Asgard\Config\Config;
 

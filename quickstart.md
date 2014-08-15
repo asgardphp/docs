@@ -32,7 +32,7 @@ If you encounter any trouble, [please let us know](https://github.com/asgardphp/
 ##Installation
 Open the console, go to your web directory, and run:
 
-	composer create-project asgard/starter asgard
+	composer create-project asgard/starter asgard --stability dev
 
 This will create a new project in the directory "asgard", retrieve all its dependencies and initialize the configuration file all by itself.
 
@@ -53,7 +53,7 @@ Here we are not using composer because we will not use these modules as dependen
 
 To install the news module, run:
 
-	php console install git@github.com:asgardbundles/news.git --update-composer --migrate
+	php console install git@github.com:asgardmodules/news.git --update-composer --migrate
 
 Along with the news, this will install some dependencies such as the admin module.
 
@@ -76,9 +76,9 @@ Open your project folder. The structure should be like:
 		app/General/
 		..
 	config/
-	locales/
-	Migrations/
-	Tests/
+	translations/
+	migrations/
+	tests/
 	vendor/
 	web/
 	...
@@ -90,10 +90,10 @@ If you dive in app/Admin/ you will see that a typical bundle is made of:
 * Controllers/ (the logic, handles the requests)
 * Entities/ (data entities)
 * locales/ (translations)
-* views/ (views contain your pages html)
-* Bundle.php (initialisation functions)
+* html/ (contains your html templates)
+* Bundle.php (initialization functions)
 
-If you now open Controllers/NewsController.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open views/index.php
+If you now open Controllers/NewsController.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open html/news/index.php
 
 The default view is pretty simple and a bit boring.. but we can improve it:
 
@@ -118,7 +118,9 @@ However, to make things faster, Asgard provides a tool that will generate most o
 				properties:
 					name:
 					price: integer
-					image: image
+					image:
+	                    type: image
+	                    web: true
 				relations:
 					category:
 						entity: Catalog\Entities\Category
@@ -168,10 +170,10 @@ Anyway, let's play with our new catalog and add some products in [http://localho
 Now that you have filled up your catalog, let's have a look at the front-office: [http://localhost/asgard/products](http://localhost/asgard/products)
 See? All your newly created products with their own individual page.
 
-Everything can be modified directly in app/Catalog/Controllers/ProductController.php and app/Catalog/views/.
+Everything can be modified directly in app/Catalog/Controllers/ProductController.php and app/Catalog/html/.
 
 ###Debugging under Asgard
-As you already have made modifications to the code, you might have already come accross the debugging screen. If not, add some invalid code to app/Catalog/views/index.php and see what happens when you refresh your products page.
+As you already have made modifications to the code, you might have already come accross the debugging screen. If not, add some invalid code to app/Catalog/html/index.php and see what happens when you refresh your products page.
 
 Besides the error message, you get the full backtrace with the code extracts and arguments. If you take the time to configure your system to open links with your favorite editor, you can access the problematic line of code in a single click.
 
@@ -183,38 +185,38 @@ So far the controller only has 2 actions. An action handles specific requests. i
 
 For our search form we will add the following action:
 
-	/**
-	 * @Route("search")
-	 */
-	public function searchAction($request) {
-		$this->form = $this->app->make('form', ['search']);
-		$this->form['term'] = new \Asgard\Form\Field\TextField();
-		$this->form['min'] = new \Asgard\Form\Field\TextField();
-		$this->form['max'] = new \Asgard\Form\Field\TextField();
-		$choices = [];
-		foreach(\Catalog\Entities\Category::all() as $category)
-			$choices[$category->id] = (string)$category;
-		$this->form['category'] = new \Asgard\Form\Field\SelectField(['choices' => $choices]);
+    /**
+     * @Route("search")
+     */
+    public function searchAction($request) {
+        $this->form = $this->$container->make('form', ['search']);
+        $this->form['term'] = new \Asgard\Form\Fields\TextField();
+        $this->form['min'] = new \Asgard\Form\Fields\TextField();
+        $this->form['max'] = new \Asgard\Form\Fields\TextField();
+        $choices = [];
+        foreach(\Catalog\Entities\Category::all() as $category)
+            $choices[$category->id] = (string)$category;
+        $this->form['category'] = new \Asgard\Form\Fields\SelectField(['choices' => $choices]);
 
-		$orm = \Catalog\Entities\Product::orm();
-		if($this->form->isSent()) {
-			$term = $this->form['term']->getValue();
-			$min = $this->form['min']->getValue();
-			$max = $this->form['max']->getValue();
-			$category = $this->form['category']->getValue();
-			if($term !== null)
-				$orm->where(['name LIKE ?'=>"%$term%"]);
-			if($min !== null)
-				$orm->where(['price >= ?'=>$min]);
-			if($max !== null)
-				$orm->where(['price <= ?'=>$max]);
-			if($category !== null)
-				$orm->where('category_id', $category);
-			$this->product = $orm->get();
-		}
-		else
-			$this->products = $orm->get();
-	}
+        $orm = \Catalog\Entities\Product::orm();
+        if($this->form->sent()) {
+            $term = $this->form['term']->value();
+            $min = $this->form['min']->value();
+            $max = $this->form['max']->value();
+            $category = $this->form['category']->value();
+            if($term !== null)
+                $orm->where(['name LIKE ?'=>"%$term%"]);
+            if($min !== null)
+                $orm->where(['price >= ?'=>$min]);
+            if($max !== null)
+                $orm->where(['price <= ?'=>$max]);
+            if($category !== null)
+                $orm->where('category_id', $category);
+            $this->products = $orm->get();
+        }
+        else
+            $this->products = $orm->get();
+    }
 
 As you may have guessed already, the url is products/search. However a bit of explanation is necessary to understand how the action works.
 
@@ -222,23 +224,23 @@ First, we creat the form with 4 fields. One or the search term, one for the mini
 
 Then if the form was posted, we perform the search, otherwise we select all products. To retrieve the product that meet the criteria, we use the ORM. With the ORM we search for products whose name contains the term, whose price is greater than min and less than max, and whose category corresponds to the one selected.
 
-That's it for the action so let's now move to the view in Catalog/views/product/search.php:
+That's it for the action so let's now move to the view in Catalog/html/product/search.php:
 
-	<?php $form->open() ?>
-	<?=$form['term']->getLabel()?>: <?=$form['term']->def()?><br>
-	<?=$form['min']->getLabel()?>: <?=$form['min']->def()?><br>
-	<?=$form['max']->getLabel()?>: <?=$form['max']->def()?><br>
-	<?=$form['category']->getLabel() ?>: <?=$form['category']->def()?><br>
+	<?=$form->open()?>
+	<?=$form['term']->label()?>: <?=$form['term']->def()?><br>
+	<?=$form['min']->label()?>: <?=$form['min']->def()?><br>
+	<?=$form['max']->label()?>: <?=$form['max']->def()?><br>
+	<?=$form['category']->label() ?>: <?=$form['category']->def()?><br>
 	<input type="submit" value="Search">
-	<?php $form->close() ?>
+	<?=$form->close()?>
 
 	<hr>
 
 	<?php foreach($products as $product): ?>
 	<p>
-		<b><?=$product?></b><br>
-		Price: <?=$product->price?><br>
-		Category: <?=$product->category?>
+	    <b><?=$product?></b><br>
+	    Price: <?=$product->price?><br>
+	    Category: <?=$product->category?>
 	</p>
 	<?php endforeach ?>
 
@@ -254,20 +256,20 @@ But before, let's create the Review entity in Catalog/Entites/Review.php
 	namespace Catalog\Entities;
 
 	class Review extends \Asgard\Entity\Entity {
-		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
-			$definition->properties = [
-				'name',
-				'comment',
-				'rating' => 'integer',
-			];
+	    public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+	        $definition->properties = [
+	            'name',
+	            'comment',
+	            'rating' => 'integer',
+	        ];
 
-			$definition->relations = [
-				'product' => [
-					'has' => 'one',
-					'entity' => 'Catalog\Entities\Product'
-				]
-			];
-		}	
+	        $definition->relations = [
+	            'product' => [
+	                'has' => 'one',
+	                'entity' => 'Catalog\Entities\Product'
+	            ]
+	        ];
+	    }   
 	}
 
 and mofidy Catalog/Entites/Product.php's relations:
@@ -285,32 +287,33 @@ And finally, migrate the database:
 
 Then let's go back to our ProductController, to modify the showAction:
 
-	/**
-	 * @Route(":id")
-	 */
-	public function showAction(\Asgard\Http\Request $request) {
-		if(!($this->product = \Catalog\Entities\Product::load($request['id'])))
-			$this->notfound();
+    /**
+     * @Route(":id")
+     */
+    public function showAction(\Asgard\Http\Request $request) {
+        if(!($this->product = \Catalog\Entities\Product::load($request['id'])))
+            $this->notfound();
 
-		$review = new \Catalog\Entities\Review(['product_id'=>$this->product->id]);
-		$this->form = $this->app->make('entityForm', [$review]);
-		if($this->form->isSent()) {
-			try {
-				$this->form->save();
-				$this->getFlash()->addSuccess('Your review was posted with success. Thank you.');
-			} catch(\Asgard\Form\FormException $e) {
-				$this->getFlash()->addError($e->errors);
-			}
-		}
-	}
+        $review = new \Catalog\Entities\Review(['product_id'=>$this->product->id]);
+        $this->form = $this->$container->make('entityForm', [$review]);
+        if($this->form->sent()) {
+            try {
+                $this->form->save();
+                $this->form->reset();
+                $this->getFlash()->addSuccess('Your review was posted with success. Thank you.');
+            } catch(\Asgard\Form\FormException $e) {
+                $this->getFlash()->addError($e->errors);
+            }
+        }
+    }
 
 Here we create an EntityForm for the entity Review. The EntityForm will create the appropriate fields for the entity properties and save the entity if the input is valid. Then we select all the product's reviews.
 
-The last thing to edit before we can start adding reviews, is the view at Catalog/views/product/show.php:
+The last thing to edit before we can start adding reviews, is the view at Catalog/html/product/show.php:
 
 	<?php $this->getFlash()->showAll() ?>
 
-	<h1><?php=$product?></h1>
+	<h1><?=$product?></h1>
 
 	<h2>Reviews</h2>
 	<ul id="reviews">
@@ -322,6 +325,14 @@ The last thing to edit before we can start adding reviews, is the view at Catalo
 	</li>
 	<?php endforeach ?>
 	</ul>
+
+	<h2>Add a review</h2>
+	<?=$form->open()?>
+	<?=$form['name']->label()?>: <?=$form['name']->def()?><br>
+	<?=$form['comment']->label()?>: <?=$form['comment']->def()?><br>
+	<?=$form['rating']->label()?>: <?=$form['rating']->def()?><br>
+	<input type="submit" value="Submit">
+	<?=$form->close()?>
 
 Congrats! If you followed all the steps accordingly you should now be able to add reviews to your products.
 
@@ -339,7 +350,7 @@ This executed the tests that are already in Tests. You might wonder which tests 
 
 Actually, when we installed the news and the admin modules, their tests were automatically added to the tests folder.
 
-And when we generated the catalog bundle, the tests were partially automatically generated in Tests/Catalog.php
+And when we generated the catalog bundle, the tests were partially automatically generated in tests/Catalog.php
 
 If you open this file you will notice that some tests are commented out. This is because their urls contains dynamic parameters that cannot be guessed so you will have to complete them yourself.
 
@@ -347,7 +358,7 @@ For the other pages, such as the search page, Asgard can help you generate tests
 
 	php console generate-tests AppTest.php
 
-This created the file Tests/AppTest.php with the newly generated tests. Within this file you should find a test for our search page:
+This created the file tests/AppTest.php with the newly generated tests. Within this file you should find a test for our search page:
 
 	$browser = $this->getBrowser();
 	$this->assertTrue($browser->get('products/search')->isOK(), 'GET products/search');
@@ -357,23 +368,23 @@ But to make it more useful, let's replace it with:
 	#Fixtures
 	$cat1 = \Catalog\Entities\Category::create(['id'=>4, 'name'=>'BarCat']);
 	$cat2 = \Catalog\Entities\Category::create(['id'=>5, 'name'=>'BarCat']);
-	\Catalog\Entities\Product::create(['name'=>'foo', 'price'=>15, 'category'=$cat1]); #in
-	\Catalog\Entities\Product::create(['name'=>'foooooo', 'price'=>5, 'category'=$cat1]); #not in
-	\Catalog\Entities\Product::create(['name'=>'foobar', 'price'=>17, 'category'=$cat1]); #in
-	\Catalog\Entities\Product::create(['name'=>'bar', 'price'=>13, 'category'=$cat1]); #not in
-	\Catalog\Entities\Product::create(['name'=>'foofoo', 'price'=>13, 'category'=$cat2]); #not in
+	\Catalog\Entities\Product::create(['name'=>'foo', 'price'=>15, 'category'=>4]); #in
+	\Catalog\Entities\Product::create(['name'=>'foooooo', 'price'=>5, 'category'=>4]); #not in
+	\Catalog\Entities\Product::create(['name'=>'foobar', 'price'=>17, 'category'=>4]); #in
+	\Catalog\Entities\Product::create(['name'=>'bar', 'price'=>13, 'category'=>4]); #not in
+	\Catalog\Entities\Product::create(['name'=>'foofoo', 'price'=>13, 'category'=>5]); #not in
 
 	#Browser
 	$browser = $this->getBrowser();
 	$browser->get('products/search');
 	$formParser = new \Asgard\Http\Browser\FormParser();
-	$formParser->parse($browser->getLast()->getContent(), '//form[0]');
-	$formParser->get('term')->setValue('foo');
-	$formParser->get('min')->setValue(10);
-	$formParser->get('min')->setValue(20);
-	$formParser->get('category')->setValue(4);
+	$formParser->parse($browser->getLast()->getContent(), '//form');
+	$formParser->get('search[term]')->setValue('foo');
+	$formParser->get('search[min]')->setValue(10);
+	$formParser->get('search[max]')->setValue(20);
+	$formParser->get('search[category]')->setValue(4);
 	$this->assertTrue($browser->post('products/search', $formParser->values())->isOK(), 'POST products/search');
-	$this->assertEquals(2, substr_count($browser->getLast()->getContent(), '<li>')); #we could use symfony\cssselector for more accuracy, but for the example only, this will do ;)
+	$this->assertEquals(2, substr_count($browser->getLast()->getContent(), '<p>'));
 
 Here we initialize some fixtures, open the search page, fill in the form, trigger the search, and verify that our products are showed.
 

@@ -12,7 +12,7 @@ Usage:
 
 	php console orm:generate [migration_name]
 
-The migration file (in micreations/) will be like:
+The migration file (in migrations/) will be like:
 
 	<?php
 	class Data extends \Asgard\Migration\DBMigration {

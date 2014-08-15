@@ -2,24 +2,20 @@
 
 Schema lets you build and modify sql tables.
 
-- [Usage in Asgard Framework](#usage-asgard)
-- [Usage outside Asgard](#usage-outside)
+- [Usage in the Asgard Framework](#usage-asgard)
+- [Usage outside the Asgard Framework](#usage-outside)
 - [Creating a table](#create)
 - [Modifying a table](#modify)
 
 <a name="usage-asgard"></a>
-##Usage in Asgard Framework
+##Usage in the Asgard Framework
 
-###Instance
-
-	$schema = $app['schema'];
-
-$app is usually available as a parameter, an object attribute or through Asgard\Container\Container::instance();
+	$schema = $container['schema'];
+	
+The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-outside"></a>
-##Usage outside Asgard Framework
-
-###Instance
+##Usage outside the Asgard Framework
 
 	$config = [/*..*/];
 	$db = new \Asgard\Db\DB($config);
