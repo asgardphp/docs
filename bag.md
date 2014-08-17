@@ -2,12 +2,23 @@
 
 Bag object offers several methods to manipulate a $data property and it implements \ArrayAccess so that you can use the object as an array.
 
+- [Installation](#installation)
 - [Usage](#usage)
 - [Accessing data](#accessing-data)
 - [Getting the whole array](#whole-array)
 - [Setting a key](#setting-key)
 - [Checking existence](#checking-existence)
 - [Removing a key](#removing-key)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/common": "dev-master"
+	}
 
 <a name="usage"></a>
 ##Usage

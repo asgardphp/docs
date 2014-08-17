@@ -2,12 +2,22 @@
 
 The Asgard Autoloader supports PSR-4 and provides some additional features that can be used besides the composer autoloader.
 
+- [Installation](#installation)
 - [Usage](#usage)
 - [Nested Namespaces](#nested-namespaces)
 - [Global Classes](#global-classes)
 - [Namespace Mapping](#namespace-mapping)
 - [Class Mapping](#class-mapping)
 - [Preloading Files](#preloading-files)
+
+<a name="installation"></a>
+##Installation
+
+In your composer file:
+
+    "require": {
+        "asgard/autoloader": "dev-master"
+	}
 
 <a name="usage"></a>
 ##Usage

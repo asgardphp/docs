@@ -2,11 +2,22 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/email.svg?branch=master)](https://travis-ci.org/asgardphp/email)
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Send an email](#send)
 - [Attach files](#files)
 - [Attach images](#images)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/email": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

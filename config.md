@@ -4,11 +4,22 @@
 
 The Config package helps you manage the configuration of your application.
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [methods](#methods)
 - [structure](#structure)
 - [Commands](#commands)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/config": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

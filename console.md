@@ -2,9 +2,20 @@
 
 The Asgard Console package is an simple extension to the [Symfony Console component](http://symfony.com/fr/doc/current/components/console/introduction.html).
 
+- [Installation](#installation)
 - [Commands](#usage)
 - [Command](#command)
 - [Application](#application)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/console": "dev-master"
+	}
 
 <a name="usage"></a>
 ##Usage

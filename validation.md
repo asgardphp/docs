@@ -2,11 +2,22 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/validation.svg?branch=master)](https://travis-ci.org/asgardphp/validation)
 
+- [Installation](#installation)
 - [Validator](#validator)
 - [Error report](#errors)
 - [Error messages](#messages)
 - [Input bag](#input)
 - [Rules](#rules)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/validation": "dev-master"
+	}
 
 <a name="validator"></a>
 ##Validator

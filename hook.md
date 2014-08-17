@@ -4,6 +4,7 @@
 
 If you have ever used an event manager, you will find the Hooks component very similar. With the HooksManager you can create hooks, on which you can hook callbacks to be executed when the hooks are triggered.
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Create a hook](#create)
@@ -11,6 +12,16 @@ If you have ever used an event manager, you will find the Hooks component very s
 - [Executing callbacks before and after hooks](#executing)
 - [Filters](#filters)
 - [The HooksChain Object](#hookschain)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/hook": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

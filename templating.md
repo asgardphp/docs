@@ -4,9 +4,20 @@
 
 Templating is a simple package which provides interfaces to build your own templating system. It also provides a PHP templating system and the Viewable class.
 
+- [Installation](#installation)
 - [Interfaces](#interfaces)
 - [PHP Template](#php)
 - [Viewable](#viewable)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/templating": "dev-master"
+	}
 
 <a name="interfaces"></a>
 ##Interfaces

@@ -4,12 +4,23 @@
 
 Entityform help you generate forms from entities. It creates the form fields corresponding to all the entity properties. Entityform is a sub-class of [Form](docs/form).
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Add entity relations](#relations)
 - [Save the entity](#save)
 - [Get the entity](#get)
 - [EntityFieldSolver](#solver)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/entityform": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

@@ -4,6 +4,7 @@
 
 Data is package for key-value database storage.
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Fetch a value](#fetch)
@@ -11,6 +12,16 @@ Data is package for key-value database storage.
 - [Delete a key](#delete)
 - [Check for a key existence](#check)
 - [Working with different data types](#types)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/data": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

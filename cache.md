@@ -4,12 +4,23 @@
 
 Asgard\Cache is a wrapper for the doctrine cache package. It provides a few additionnal features.
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Array implementation](#array)
 - [Default result](#default)
 - [NullCache](#nullcache)
 - [Commands](#commands)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/cache": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

@@ -4,6 +4,15 @@
 
 The DB package lets you manipulate the database, build SQL queries and manipulate the tables structure with Schema.
 
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/db": "dev-master"
+	}
+
 ##DB
 
 To connect to the database and make SQL queries. [See the documentation.](docs/db-db)

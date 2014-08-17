@@ -4,6 +4,7 @@
 
 Entities are elements that represent your data. Some frameworks call them models, but they are similar, although entities don't deal themselves directly with the database. They should always be stored in the Entities folder of a bundle.
 
+- [Installation](#installation)
 - [Instance](#instance)
 - [Definition](#definition)
 - [Properties](#properties)
@@ -12,6 +13,16 @@ Entities are elements that represent your data. Some frameworks call them models
 - [Validation](#validation)	
 - [I18N](#i18n)
 - [Utils](#utils)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/entity": "dev-master"
+	}
 
 <a name="instance"></a>
 ##Instance

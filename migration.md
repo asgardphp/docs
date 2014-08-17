@@ -4,10 +4,21 @@
 
 The migration packages lets you manage and execute your migrations.
 
+- [Installation](#installation)
 - [Overview](#overview)
 - [MigrationsManager](#migrationsmanager)
 - [Tracker](#tracker)
 - [Commands](#commands)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/migration": "dev-master"
+	}
 
 <a name="lifecycle"></a>
 ##Overview

@@ -4,6 +4,7 @@
 
 The container provides services to the application. In the Asgard framework, the container is often stored in the container variable.
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Registering a service](#registering)
@@ -13,6 +14,16 @@ The container provides services to the application. In the Asgard framework, the
 - [Removing a service](#removing)
 - [ContainerAware Trait](#containeraware)
 - [Commands](#commands)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/container": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

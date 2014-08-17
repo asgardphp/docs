@@ -4,8 +4,19 @@
 
 File is a package to work with the file system and it provides a class to manipulate files as objects.
 
+- [Installation](#installation)
 - [FileSystem](#filesystem)
 - [File](#file)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/file": "dev-master"
+	}
 
 <a name="filesystem"></a>
 ##FileSystem

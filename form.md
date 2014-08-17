@@ -4,6 +4,7 @@
 
 The Form library makes it very easy to build forms, render them, remember inputs after submission and automatically process it, validate and protected from CSRF attacks.
 
+- [Installation](#installation)
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Form dependencies](#dependencies)
@@ -19,6 +20,16 @@ The Form library makes it very easy to build forms, render them, remember inputs
 - [Managing widgets](#managing-widgets)
 - [Form dependencies](#dependencies)
 - [Examples](#examples)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/form": "dev-master"
+	}
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework

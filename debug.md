@@ -2,8 +2,19 @@
 
 The debug package helps to handle errors and display debugging information to the developer.
 
+- [Installation](#installation)
 - [ErrorHandler](#errorhandler)
 - [Debug](#debug)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/debug": "dev-master"
+	}
 
 <a name="errorhandler"></a>
 ##ErrorHandler

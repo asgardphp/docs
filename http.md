@@ -2,7 +2,16 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/http.svg?branch=master)](https://travis-ci.org/asgardphp/http)
 
-Handles the HTTP requests, routing, controllers and responses..
+Library to handle HTTP requests, routing, controllers and responses.
+
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/http": "dev-master"
+	}
 
 ##Request & Response
 

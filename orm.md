@@ -2,7 +2,16 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/orm.svg?branch=master)](https://travis-ci.org/asgardphp/orm)
 
-The ORM package gives you the possibility to store, fetch, search entities and define their relations to each other.
+The ORM package gives you the possibility to store, fetch, search entities and define their relations to each other. It works with the [Asgard Entity package](http://github.com/asgardphp/entity).
+
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/orm": "dev-master"
+	}
 
 ##Entity Relations
 

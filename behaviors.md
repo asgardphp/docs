@@ -4,11 +4,22 @@
 
 The Behaviors package provides some behaviors ready to use out-of-the-box for your entities.
 
+- [Installation](#installation)
 - [MetasBehavior](#metas)
 - [PublishBehavior](#publish)
 - [SlugifyBehavior](#slugify)
 - [SortableBehavior](#sortable)
 - [TimestampsBehavior](#timestamps)
+
+<a name="installation"></a>
+##Installation
+**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+
+In your composer file:
+
+    "require": {
+        "asgard/behaviors": "dev-master"
+	}
 
 <a name="metas"></a>
 ##MetasBehavior
