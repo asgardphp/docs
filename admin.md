@@ -83,13 +83,13 @@ By default, you can manage administrators in Configuration > Administrators and 
 If you already have an entity that you want to be administrable, you can create an admin controller as following:
 
 	<?php
-	namespace App\Article\Controllers;
+	namespace Article\Controllers;
 
 	/**
 	 * @Prefix("admin/articles")
 	 */
 	class ArticleAdminController extends \Admin\Libs\Controller\EntityAdminController {
-		protected $_entity = 'App\Article\Entities\Article';
+		protected $_entity = 'Article\Entities\Article';
 		protected $_singular = 'article';
 		protected $_plural = 'articles';
 

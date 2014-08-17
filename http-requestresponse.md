@@ -1,4 +1,4 @@
-#HTTP
+#Request & Response
 
 - [Request lifecycle](#lifecycle)
 - [Request object](#object)

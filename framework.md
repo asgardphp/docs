@@ -97,7 +97,7 @@ Bundle.php contains a class called Bundle which extends \Asgard\Core\BundleLoade
 	namespace MyBundle;
 
 	class Bundle extends \Asgard\Core\BundleLoader {
-		public function buildApp(container) {
+		public function buildContainer(container) {
 			// ...
 		}
 
@@ -108,7 +108,7 @@ Bundle.php contains a class called Bundle which extends \Asgard\Core\BundleLoade
 		}
 	}
 
-The method buildApp(container) is used to create the [application services container](docs/container). Here, add all your services to the container.
+The method buildContainer(container) is used to create the [application services container](docs/container). Here, add all your services to the container.
 
 The method run(container) is used to bootstrap your bundle. Put here the code that needs to be executed during the loading of the application.
 

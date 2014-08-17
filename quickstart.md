@@ -12,13 +12,11 @@
 
 <a name="introduction"></a>
 ##Introduction
-Here is a 1 hour tutorial that will give you a taste of Asgard and discover how its functionnalities can help you improve your workflow.
-
-In that short amount of time we will go through all the necessary steps to build a small website with administrable news and products.
+Here is a 1 hour tutorial that will give you a taste of Asgard and discover how its functionalities can help you improve your workflow. In that short amount of time we will go through all the necessary steps to build a small website with manageable news and products.
 
 However this tutorial is only meant to introduce you to Asgard, and as such it does not intend to provide detailed documentation. For more information please refer to the documentation.
 
-If you encounter any trouble, [please let us know](https://github.com/asgardphp/website/issues).
+If you encounter any trouble, [please let us know](https://github.com/asgardphp/docs/issues).
 
 <a name="requirements"></a>
 ##Requirements
@@ -26,13 +24,14 @@ If you encounter any trouble, [please let us know](https://github.com/asgardphp/
 * MySQL
 * PHP 5.4+
 * [Composer](https://getcomposer.org/download/)
+* Git
 * PHPUnit (last section only)
 
 <a name="installation"></a>
 ##Installation
 Open the console, go to your web directory, and run:
 
-	composer create-project asgard/starter [folder] --stability dev
+	composer create-project asgard/starter asgard --stability dev
 
 This will create a new project in the directory "asgard", retrieve all its dependencies and initialize the configuration file all by itself.
 
@@ -40,7 +39,7 @@ Now we need to initialize the database. This is done with the following command:
 
 	php console db:init
 
-This will prompt you for the configuration of the database, and if possible, create it if it does not exist yet. Otherwise you will need to create the database manually.
+This will prompt you for the configuration of the database, and if possible, create it if it does not exist yet.
 
 And that's it! You have installed and configured your new project.
 If you open [http://localhost/asgard/](http://localhost/asgard) in your browser, you should see the Asgard default homepage.
@@ -49,13 +48,13 @@ If you open [http://localhost/asgard/](http://localhost/asgard) in your browser,
 ##Installing modules
 One of the nice things that comes with Asgard, is the ability to build your application with existing modules with a single command.
 
-Here we are not using composer because we will not use these modules as dependencies but as actual parts of our application so that we can modify them and extends them easily.
+Here we are not using composer because we will not use these modules as dependencies but as actual parts of our application that we want to customize to our taste.
 
 To install the news module, run:
 
-	php console install git@github.com:asgardmodules/news.git --update-composer --migrate
+	php console install git@github.com:asgardmodules/news.git --update-composer --migrateou
 
-Along with the news, this will install some dependencies such as the admin module.
+Along with the news, this will install some dependencies such as the admin module and a ckeditor wysiwyg.
 
 Because of the --update-composer and --migrate options, the command will automatically update composer dependencies and run the migrations. Hence, the tables have been automatically created for your new modules. If you didn't want to update composer and execute the migrations automatically, you could simply remove these options from the command line.
 
@@ -63,9 +62,9 @@ Besides composer and migrations, the installation also published the web assets,
 
 Now open [http://localhost/asgard/admin/](http://localhost/asgard/admin) and login using admin as both username and password.
 
-As you can see, the administration is already functionnal. Click on "News" in the menu, and let's add of few elements (by clicking on "Add").
+As you can see, the administration is already functional. Click on "News" in the menu and let's add a few elements (click on "Add").
 
-Now that you are done with the administration, open [http://localhost/asgard/news/](http://localhost/asgard/news/). This is the default index page for our news module and it displays the elements you have just created.
+Now that you are done with the administration, open [http://localhost/asgard/news/](http://localhost/asgard/news/). This is the default index for our news module and it displays the elements you have just created.
 
 ###Files structure
 
@@ -74,6 +73,8 @@ Open your project folder. The structure should be like:
 	app/
 		app/Admin/
 		app/General/
+		app/News/
+		app/Wysiwyg/
 		..
 	config/
 	translations/
@@ -89,7 +90,7 @@ If you dive in app/Admin/ you will see that a typical bundle is made of:
 
 * Controllers/ (the logic, handles the requests)
 * Entities/ (data entities)
-* locales/ (translations)
+* translations/ (translations)
 * html/ (contains your html templates)
 * Bundle.php (initialization functions)
 
@@ -108,9 +109,9 @@ Refresh, and voilà! By the way, have you noticed how we can easily print the ne
 
 <a name="bundle"></a>
 ##Building a bundle
-Good job! But installing an existing module was a bit too easy and we won't always have an existing module for everything. So we are now going to build our own bundle from scrach. This bundle will contains the code for our products catalog. Products will belongs to categories and have their own preview image as well as some information such as the price and name.
+Good job! But installing an existing module was a bit too easy and we won't always have an existing module for everything. So we are now going to build our own bundle from scratch. This bundle will contains the code for our products catalog. Products will belongs to categories and have their own preview image as well as some information such as the price and name.
 
-However, to make things faster, Asgard provides a tool that will generate most of the code for us, based on our instructions. Our instructions come in the form of a YAML file. For example, for our new products catalog, we will use:
+To make things faster, Asgard provides a tool that will generate most of the code for us, based on our instructions which come in the form of a YAML file. For example, for our new products catalog, we will use:
 
 	Catalog:
 		Entities:
@@ -153,15 +154,15 @@ Then, by saying "admin: true", we tell the generator that we want an admin inter
 
 Same thing with Category excepts we don't generate the front controller.
 
-The last line, "tests: true", tells the generator to generate the functionnal tests but we will get back to it in the last section.
+The last line, "tests: true", tells the generator to generate the functional tests but we will get back to it in the last section.
 
 **But what about the database?** Well, Asgard is here to help again.
 
-We have the entities Product and Category. By running the following command, Asgard will analyse these entities, generate a migration file for them, and execute it.
+We have the entities Product and Category. By running the following command, Asgard will analyze these entities, generate a migration file for them, and execute it.
 
 	php console orm:automigrate
 
-But had you prefered not to execute it automatically, the following command would only generate the migration, leaving up to you the possibility to modify it (in Migrations/):
+But had you preferred not to execute it automatically, the following command would only generate the migration, leaving up to you the possibility to modify it (in migrations/):
 
 	php console orm:generate
 
@@ -173,9 +174,9 @@ See? All your newly created products with their own individual page.
 Everything can be modified directly in app/Catalog/Controllers/ProductController.php and app/Catalog/html/.
 
 ###Debugging under Asgard
-As you already have made modifications to the code, you might have already come accross the debugging screen. If not, add some invalid code to app/Catalog/html/index.php and see what happens when you refresh your products page.
+As you already have made modifications to the code, you might have already come across the debugging screen. If not, add some invalid code to app/Catalog/html/index.php and see what happens when you refresh your products page.
 
-Besides the error message, you get the full backtrace with the code extracts and arguments. If you take the time to configure your system to open links with your favorite editor, you can access the problematic line of code in a single click.
+Besides the error message, you get the full backtrace with the code excerpts and arguments. To access specific files and lines of code in a single click, open config/config.yml and replace the "debug_url" value. You will also have to register the protocol handler ([how to on windows](http://msdn.microsoft.com/en-us/library/ie/aa767914(v=vs.85).aspx)).
 
 <a name="search"></a>
 ##Search form
@@ -220,7 +221,7 @@ For our search form we will add the following action:
 
 As you may have guessed already, the url is products/search. However a bit of explanation is necessary to understand how the action works.
 
-First, we creat the form with 4 fields. One or the search term, one for the minimum and another for the maximum price, and one for the category. The last one is filled with all the existing categories.
+First, we create the form with 4 fields. One for the search term, one for the minimum price and another for the maximum price, and one for the category. The last one is filled with all existing categories.
 
 Then if the form was posted, we perform the search, otherwise we select all products. To retrieve the product that meet the criteria, we use the ORM. With the ORM we search for products whose name contains the term, whose price is greater than min and less than max, and whose category corresponds to the one selected.
 
@@ -307,7 +308,7 @@ Then let's go back to our ProductController, to modify the showAction:
         }
     }
 
-Here we create an EntityForm for the entity Review. The EntityForm will create the appropriate fields for the entity properties and save the entity if the input is valid. Then we select all the product's reviews.
+Here we create an EntityForm for the entity Review. The EntityForm will create the appropriate fields for the entity properties and save the entity if the input is valid.
 
 The last thing to edit before we can start adding reviews, is the view at Catalog/html/product/show.php:
 
@@ -336,7 +337,7 @@ The last thing to edit before we can start adding reviews, is the view at Catalo
 
 Congrats! If you followed all the steps accordingly you should now be able to add reviews to your products.
 
-Our website now has administrable news, products and categories, and a review system.
+Our website now has manageable news, products and categories, and a review system.
 
 <a name="testing"></a>
 ##Testing
@@ -346,13 +347,13 @@ To execute the tests, run the following command at your project root:
 
 	phpunit
 
-This executed the tests that are already in Tests. You might wonder which tests as we haven't made any yet.
+This executes the tests that are already in tests/. You might wonder which tests as we haven't made any yet.
 
 Actually, when we installed the news and the admin modules, their tests were automatically added to the tests folder.
 
 And when we generated the catalog bundle, the tests were partially automatically generated in tests/Catalog.php
 
-If you open this file you will notice that some tests are commented out. This is because their urls contains dynamic parameters that cannot be guessed so you will have to complete them yourself.
+If you open this file you will notice that some tests are commented out. This is because their urls contains dynamic parameters that cannot be guessed so you will have to complete them manually.
 
 For the other pages, such as the search page, Asgard can help you generate tests. Run:
 
@@ -388,10 +389,10 @@ But to make it more useful, let's replace it with:
 
 Here we initialize some fixtures, open the search page, fill in the form, trigger the search, and verify that our products are showed.
 
-Now every time you will execute the tests, you will know whether your search form is still functionnal.
+Now every time you will execute the tests, you will know whether your search form is still functional.
 
 <a name="conclusion"></a>
 ##Conclusion
 Alright, we are done! I really hope you enjoyed this little journey with Asgard.
 
-Again, if you came accross any difficulty or you just want to share a word, [contact us](about), join the [community](community) or [report an issue](https://github.com/asgardphp/website/issues).
+Again, if you came across any difficulty or you just want to share a word, [contact us](about), join the [community](community) or [report an issue](https://github.com/asgardphp/docs/issues).

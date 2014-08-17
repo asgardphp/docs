@@ -35,6 +35,40 @@ Structure your code around controllers. [See the documentation.](docs/http-contr
 		}
 	}
 
+##Utils
+
+The package comes with tools. [See the documentation.](docs/http-utils)
+
+###HTML
+
+	#in the controller or the page view
+	$html->includeJS('query.js');
+	$html->includeCSS('style.css');
+
+	#in the layout view
+	$html->printAll();
+
+###Flash
+
+	#in the controller
+	$flash->addSuccess('Hurray!);
+
+	#in the view
+	$flash->showAll();
+
+###Browser
+
+	$container = \Asgard\Container\Container::singleton();
+	$browser = new \Asgard\Http\Browser\Browser($container);
+	$browser->getSession()->set('admin_id', 123);
+	
+	$response = $browser->post('admin/news/new');
+
+	if($response->getCode() != 200)
+		echo 'error..';
+	else
+		echo $response->getContent();
+
 ##Commands
 
 [List of commands that come with the HTTP package.](docs/http-commands)

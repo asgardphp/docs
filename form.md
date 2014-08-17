@@ -11,6 +11,7 @@ The Form library makes it very easy to build forms, render them, remember inputs
 - [HTTP Methods](#http-methods)
 - [Fields](#fields)
 - [Groups and Forms](#groups)
+- [Dynamic Groups](#dynamic)
 - [Save and Validation](#validation)
 - [CSRF Protection](#csrf)
 - [Form data](#data)
@@ -318,6 +319,72 @@ You can as well loop through a group or a form fields:
 	foreach($group as $field) {
 		// do something with the field
 	}
+
+<a name="dynamic"></a>
+##Dynamic Groups
+
+###Usage
+Dynamic groups are very useful when you have an indefinite number of fields in a group. For example, a form in which the user could add as many names as he wants, with one name per field.
+
+To add a dynamic group, use:
+
+	$callback = function($data) {
+		return new \Asgard\Http\Fields\TextField;
+	};
+	$form['names'] = \Asgard\Form\DynamicGroup($callback);
+
+This will create a TextField automatically for each input in the group "names". If the user sends 5 names, the form will adapt itself and create 5 TextField to contain the 5 names.
+
+###Prefill
+You can even prefill a dynamic group:
+
+	$form['names'][] =  new \Asgard\Http\Fields\TextField(['default'=>'name1']);
+	$form['names'][] =  new \Asgard\Http\Fields\TextField(['default'=>'name2']);
+
+###Rendering
+
+	echo $form->open();
+	foreach($form['names'] as $field)
+		echo $field->def();
+	echo $form->submit();
+	echo $form->close();
+
+You can set a lambda function to render a field of the dynamic group:
+
+	$form['names']->setDefaultRender(function($field) {
+		return $field->label().': '.$field->def();
+	});
+
+You would then have the following code in the view:
+
+	echo $form->open();
+	foreach($form['names'] as $field)
+		echo $form['names']->def($field);
+	echo $form->submit();
+	echo $form->close();
+
+###Using jQuery to handle multiple fields on the front-end
+
+To let the user add fields by himself, use the following snippet:
+
+	<script>
+	function add() {
+		var newfield = $('<?php echo $form['names']->renderTemplate("'+$('.name').length+'") ?>');
+		$('#slides').append(newfield);
+	}
+	</script>
+
+	echo $form->open();
+	echo '<div id="names">';
+	foreach($form['names'] as $field)
+		echo '<div>'.$field->label().': '.$field-def(['attrs'=>['class'=>'name']]).'</div>';
+	echo '</div>';
+
+	<input type="button" name="add" value="Add a name" onclick="add()">
+	echo $form->submit();
+	echo $form->close();
+
+The method renderTemplate generates a javascript template for create new HTML fields when the user clicks on the "add" button.
 
 <a name="validation"></a>
 ##Save and Validation
