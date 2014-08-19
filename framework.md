@@ -81,7 +81,7 @@ A bundle typically consists of:
 	Controllers/	contains [HTTP controllers](docs/http-controllers)
 	Entities/		contains [entities](docs/entity)
 	html/			contains the [controllers views](docs/http-controllers#views)
-	Hooks/			contains the [hooks containers/](docs/hook)
+	Hooks/			contains the [hooks containers/](docs/hook#hookscontainer)
 	translation/	contains the translation files
 	Bundle.php
 
@@ -121,6 +121,8 @@ You can also override the following methods:
 	loadTranslations($translator)
 	loadCommands($console)
 	loadEntities()
+
+Use the [Core/BundleLoader.php](https://github.com/asgardphp/asgard/blob/master/Core/BundleLoader.php) file as reference.
 
 The last two are only called when the application is in console mode.
 

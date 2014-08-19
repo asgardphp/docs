@@ -10,7 +10,7 @@ Modules can be used to quickly extend your application with new features that yo
 
 To install a module, run:
 
-	php console [source] --migrate --update-composer
+	php console install [source] --migrate --update-composer
 
 [source] must be a git repository, e.g. git@github.com:asgardmodules/admin.git
 
