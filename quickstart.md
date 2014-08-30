@@ -42,7 +42,7 @@ Now we need to initialize the database. This is done with the following command:
 This will prompt you for the configuration of the database, and if possible, create it if it does not exist yet.
 
 And that's it! You have installed and configured your new project.
-If you open [http://localhost/asgard/](http://localhost/asgard) in your browser, you should see the Asgard default homepage.
+If you open [http://localhost/asgard/web/](http://localhost/asgard/web/) in your browser, you should see the Asgard default homepage.
 
 <a name="modules"></a>
 ##Installing modules
@@ -52,7 +52,7 @@ Here we are not using composer because we will not use these modules as dependen
 
 To install the news module, run:
 
-	php console install git@github.com:asgardmodules/news.git --update-composer --migrateou
+	php console install git@github.com:asgardmodules/news.git --update-composer --migrate
 
 Along with the news, this will install some dependencies such as the admin module and a ckeditor wysiwyg.
 
@@ -60,11 +60,11 @@ Because of the --update-composer and --migrate options, the command will automat
 
 Besides composer and migrations, the installation also published the web assets, configuration files and even tests in the appropriate folders.
 
-Now open [http://localhost/asgard/admin/](http://localhost/asgard/admin) and login using admin as both username and password.
+Now open [http://localhost/asgard/web/admin/](http://localhost/asgard/web/admin) and login using admin as both username and password.
 
 As you can see, the administration is already functional. Click on "News" in the menu and let's add a few elements (click on "Add").
 
-Now that you are done with the administration, open [http://localhost/asgard/news/](http://localhost/asgard/news/). This is the default index for our news module and it displays the elements you have just created.
+Now that you are done with the administration, open [http://localhost/asgard/web/news/](http://localhost/asgard/web/news/). This is the default index for our news module and it displays the elements you have just created.
 
 ###Files structure
 
@@ -166,9 +166,9 @@ But had you preferred not to execute it automatically, the following command wou
 
 	php console orm:generate
 
-Anyway, let's play with our new catalog and add some products in [http://localhost/asgard/admin/products](http://localhost/asgard/admin/products). You can also manage categories by clicking on "Categories" in the "Content" sub-menu.
+Anyway, let's play with our new catalog and add some products in [http://localhost/asgard/web/admin/products](http://localhost/asgard/web/admin/products). You can also manage categories by clicking on "Categories" in the "Content" sub-menu.
 
-Now that you have filled up your catalog, let's have a look at the front-office: [http://localhost/asgard/products](http://localhost/asgard/products)
+Now that you have filled up your catalog, let's have a look at the front-office: [http://localhost/asgard/web/products](http://localhost/asgard/web/products)
 See? All your newly created products with their own individual page.
 
 Everything can be modified directly in app/Catalog/Controllers/ProductController.php and app/Catalog/html/.
@@ -245,7 +245,7 @@ That's it for the action so let's now move to the view in Catalog/html/product/s
 	</p>
 	<?php endforeach ?>
 
-First we display the form we have constructed in the action, then we display with a foreach loop all the selected products. Open [http://localhost/asgard/procucts/search](http://localhost/asgard/procucts/search) and give it a try.
+First we display the form we have constructed in the action, then we display with a foreach loop all the selected products. Open [http://localhost/asgard/web/procucts/search](http://localhost/asgard/web/procucts/search) and give it a try.
 
 <a name="reviews"></a>
 ##Products reviews
