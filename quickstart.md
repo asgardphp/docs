@@ -24,7 +24,7 @@ If you encounter any trouble, [please let us know](https://github.com/asgardphp/
 * MySQL
 * PHP 5.4+
 * [Composer](https://getcomposer.org/download/)
-* Git
+* [Git](http://git-scm.com/downloads)
 * PHPUnit (last section only)
 
 <a name="installation"></a>
