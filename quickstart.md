@@ -52,7 +52,7 @@ Here we are not using composer because we will not use these modules as dependen
 
 To install the news module, run:
 
-	php console install git@github.com:asgardmodules/news.git --update-composer --migrate
+	php console install https://github.com/asgardmodules/news.git --update-composer --migrate
 
 Along with the news, this will install some dependencies such as the admin module and a ckeditor wysiwyg.
 
