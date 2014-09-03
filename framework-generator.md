@@ -25,47 +25,47 @@ Options:
 ###List of bundles
 
 	Bundle1:
-		#...
+	  #...
 	Bundl2:
-		#...
+	  #...
 
 ###Bundle entities
 
 	Bundle1:
-		entities:
-			Product:
-				#...
-			Category:
-				#...
+	  entities:
+	    Product:
+	      #...
+	    Category:
+	      #...
 
 ###Entity definition
 
 Please refer to the [entity documentation](docs/entity).
 
 	Bundle1:
-		entities:
-	        Product:
-	            properties:
-	                name:
-	                price: integer
-	                image:
-	                    type: image
-	                    web: true
-	            relations:
-	                category:
-	                    entity: Bundle1\Entities\Category
-	                    has: one
-	            behaviors:
-	                \Asgard\Behaviors\SortableBehavior:
-	        Category:
-	            meta:
-	                plural: categorys
-	            properties:
-	                name:
-	            relations:
-	                products:
-	                    entity: Bundle1\Entities\Product
-	                    has: many
+	  entities:
+	    Product:
+	      properties:
+	        name:
+	        price: integer
+	        image:
+	          type: image
+	          web: true
+	      relations:
+	        category:
+	          entity: Bundle1\Entities\Category
+	          has: one
+	      behaviors:
+	        \Asgard\Behaviors\SortableBehavior:
+	    Category:
+	      meta:
+	        plural: categorys
+	      properties:
+	        name:
+	      relations:
+	        products:
+	          entity: Bundle1\Entities\Product
+	          has: many
 
 This will generate the following entities, in app/Bundle1/Entities/Product.php:
 
@@ -149,23 +149,23 @@ And app/Bundle1/Entities/Category.php
 ###Entity front controller
 
 	Bundle1:
-		entities:
-			Product:
-				front: true
+	  entities:
+	    Product:
+	      front: true
 
 is the same as:
 
 	Bundle1:
-		entities:
-			Product:
-				front: [index, show]
+	  entities:
+	    Product:
+	      front: [index, show]
 
 You can choose to generate only one action in the front controller:
 
 	Bundle1:
-		entities:
-			Product:
-				front: [index] #or: front: [show]
+	  entities:
+	    Product:
+	      front: [index] #or: front: [show]
 
 This will generate the following controller in app/Bundle1/Controllers/ProductController.php:
 
@@ -200,9 +200,9 @@ This will generate the following controller in app/Bundle1/Controllers/ProductCo
 Please refer to the [controllers documentation](docs/http-controllers).
 
 	Bundle1:
-		controllers:
-			Controller1:
-			Controller2:
+	  controllers:
+	    Controller1:
+	    Controller2:
 
 This will generate the controllers:
 
@@ -212,18 +212,18 @@ This will generate the controllers:
 ####Controller definitions
 
 	Bundle1:
-		controllers:
-			Member:
-				prefix: members
-				actions:
-		    		login:
-		    			route: login
-		    		register:
-		    			route: register
-		    		profile:
-		    			route: profile/:id
-		    			template: memberprofile.php
-		    			viewFile: /path/to/memberprofile.html
+	  controllers:
+	    Member:
+	      prefix: members
+	      actions:
+	        login:
+	          route: login
+	        register:
+	          route: register
+	        profile:
+	          route: profile/:id
+	          template: memberprofile.php
+	          viewFile: /path/to/memberprofile.html
 
 The prefix is used as a prefix for all routes.
 
@@ -262,7 +262,7 @@ The previous instructions will generate the controller as following:
 To automatically generate tests in the tests/ folder.
 
 	Bundle1:
-		tests: true
+	  tests: true
  
 <a name="example"></a>
 ##Full Example
@@ -270,46 +270,46 @@ To automatically generate tests in the tests/ folder.
 The instructions must be written in a YAML file. For example:
 
 	Bundle1:
-	    entities:
-	        Product:
-	            properties:
-	                name:
-	                price: integer
-	                image:
-	                    type: image
-	                    web: true
-	            relations:
-	                category:
-	                    entity: Bundle1\Entities\Category
-	                    has: one
-	            behaviors:
-	                \Asgard\Behaviors\SortableBehavior:
-	            admin:
-	                relations: [category]
-	            front: true
-	        Category:
-	            meta:
-	                plural: categorys
-	            properties:
-	                name:
-	            relations:
-	                products:
-	                    entity: Bundle1\Entities\Product
-	                    has: many
-	            admin: true
+	  entities:
+	    Product:
+	      properties:
+	        name:
+	        price: integer
+	        image:
+	          type: image
+	          web: true
+	      relations:
+	        category:
+	          entity: Bundle1\Entities\Category
+	          has: one
+	      behaviors:
+	        \Asgard\Behaviors\SortableBehavior:
+	      admin:
+	        relations: [category]
+	      front: true
+	    Category:
+	      meta:
+	        plural: categorys
+	      properties:
+	        name:
+	      relations:
+	        products:
+	          entity: Bundle1\Entities\Product
+	          has: many
+	      admin: true
 		controllers:
-		    Member:
-		    	prefix: members
-		    	actions:
-		    		login:
-		    			route: login
-		    		register:
-		    			route: register
-		    		profile:
-		    			route: profile/:id
-		    			template: memberprofile.php
-		    			viewFile: /path/to/memberprofile.html
-	    tests: true
+		  Member:
+		    prefix: members
+		    actions:
+		      login:
+		        route: login
+		      register:
+		        route: register
+		      profile:
+		        route: profile/:id
+		        template: memberprofile.php
+		        viewFile: /path/to/memberprofile.html
+	  tests: true
 
 Here we are building a single bundle called "Bundle1". In that bundle we are creating two entities "Product" and "Category". The "Product" entity has the following properties: name, price and image, the relation "category" and the bahavior "\Asgard\Behaviors\SortableBehavior".
 

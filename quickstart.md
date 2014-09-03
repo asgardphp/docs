@@ -52,7 +52,9 @@ Here we are not using composer because we will not use these modules as dependen
 
 To install the news module, run:
 
-	php console install https://github.com/asgardmodules/news.git --update-composer --migrate
+```text
+php console install https://github.com/asgardmodules/news.git --update-composer --migrate
+```
 
 Along with the news, this will install some dependencies such as the admin module and a ckeditor wysiwyg.
 
@@ -114,33 +116,33 @@ Good job! But installing an existing module was a bit too easy and we won't alwa
 To make things faster, Asgard provides a tool that will generate most of the code for us, based on our instructions which come in the form of a YAML file. For example, for our new products catalog, we will use:
 
 	Catalog:
-		Entities:
-			Product:
-				properties:
-					name:
-					price: integer
-					image:
-	                    type: image
-	                    web: true
-				relations:
-					category:
-						entity: Catalog\Entities\Category
-						has: one
-				behaviors:
-					\Asgard\Behaviors\SortableBehavior:
-				admin: true
-				front: true
-			Category:
-				meta:
-					plural: categories
-				properties:
-					name:
-				relations:
-					products:
-						entity: Catalog\Entities\Product
-						has: many
-				admin: true
-		tests: true
+	  Entities:
+	    Product:
+	      properties:
+	        name:
+	        price: integer
+	        image:
+	          type: image
+	          web: true
+	      relations:
+	        category:
+	          entity: Catalog\Entities\Category
+	          has: one
+	      behaviors:
+	        \Asgard\Behaviors\SortableBehavior:
+	      admin: true
+	      front: true
+	    Category:
+	      meta:
+	        plural: categories
+	      properties:
+	        name:
+	      relations:
+	        products:
+	          entity: Catalog\Entities\Product
+	          has: many
+	      admin: true
+	  tests: true
 
 So copy it, save it as a YAML file in your project directory, and run:
 
@@ -186,38 +188,38 @@ So far the controller only has 2 actions. An action handles specific requests. i
 
 For our search form we will add the following action:
 
-    /**
-     * @Route("search")
-     */
-    public function searchAction($request) {
-        $this->form = $this->$container->make('form', ['search']);
-        $this->form['term'] = new \Asgard\Form\Fields\TextField();
-        $this->form['min'] = new \Asgard\Form\Fields\TextField();
-        $this->form['max'] = new \Asgard\Form\Fields\TextField();
-        $choices = [];
-        foreach(\Catalog\Entities\Category::all() as $category)
-            $choices[$category->id] = (string)$category;
-        $this->form['category'] = new \Asgard\Form\Fields\SelectField(['choices' => $choices]);
+	/**
+	 * @Route("search")
+	 */
+	public function searchAction($request) {
+		$this->form = $this->$container->make('form', ['search']);
+		$this->form['term'] = new \Asgard\Form\Fields\TextField();
+		$this->form['min'] = new \Asgard\Form\Fields\TextField();
+		$this->form['max'] = new \Asgard\Form\Fields\TextField();
+		$choices = [];
+		foreach(\Catalog\Entities\Category::all() as $category)
+			$choices[$category->id] = (string)$category;
+		$this->form['category'] = new \Asgard\Form\Fields\SelectField(['choices' => $choices]);
 
-        $orm = \Catalog\Entities\Product::orm();
-        if($this->form->sent()) {
-            $term = $this->form['term']->value();
-            $min = $this->form['min']->value();
-            $max = $this->form['max']->value();
-            $category = $this->form['category']->value();
-            if($term !== null)
-                $orm->where(['name LIKE ?'=>"%$term%"]);
-            if($min !== null)
-                $orm->where(['price >= ?'=>$min]);
-            if($max !== null)
-                $orm->where(['price <= ?'=>$max]);
-            if($category !== null)
-                $orm->where('category_id', $category);
-            $this->products = $orm->get();
-        }
-        else
-            $this->products = $orm->get();
-    }
+		$orm = \Catalog\Entities\Product::orm();
+		if($this->form->sent()) {
+			$term = $this->form['term']->value();
+			$min = $this->form['min']->value();
+			$max = $this->form['max']->value();
+			$category = $this->form['category']->value();
+			if($term !== null)
+				$orm->where(['name LIKE ?'=>"%$term%"]);
+			if($min !== null)
+				$orm->where(['price >= ?'=>$min]);
+			if($max !== null)
+				$orm->where(['price <= ?'=>$max]);
+			if($category !== null)
+				$orm->where('category_id', $category);
+			$this->products = $orm->get();
+		}
+		else
+			$this->products = $orm->get();
+	}
 
 As you may have guessed already, the url is products/search. However a bit of explanation is necessary to understand how the action works.
 
@@ -239,9 +241,9 @@ That's it for the action so let's now move to the view in Catalog/html/product/s
 
 	<?php foreach($products as $product): ?>
 	<p>
-	    <b><?=$product?></b><br>
-	    Price: <?=$product->price?><br>
-	    Category: <?=$product->category?>
+		<b><?=$product?></b><br>
+		Price: <?=$product->price?><br>
+		Category: <?=$product->category?>
 	</p>
 	<?php endforeach ?>
 
@@ -257,20 +259,20 @@ But before, let's create the Review entity in Catalog/Entites/Review.php
 	namespace Catalog\Entities;
 
 	class Review extends \Asgard\Entity\Entity {
-	    public static function definition(\Asgard\Entity\EntityDefinition $definition) {
-	        $definition->properties = [
-	            'name',
-	            'comment',
-	            'rating' => 'integer',
-	        ];
+		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+			$definition->properties = [
+				'name',
+				'comment',
+				'rating' => 'integer',
+			];
 
-	        $definition->relations = [
-	            'product' => [
-	                'has' => 'one',
-	                'entity' => 'Catalog\Entities\Product'
-	            ]
-	        ];
-	    }   
+			$definition->relations = [
+				'product' => [
+					'has' => 'one',
+					'entity' => 'Catalog\Entities\Product'
+				]
+			];
+		}
 	}
 
 and mofidy Catalog/Entites/Product.php's relations:
@@ -288,25 +290,25 @@ And finally, migrate the database:
 
 Then let's go back to our ProductController, to modify the showAction:
 
-    /**
-     * @Route(":id")
-     */
-    public function showAction(\Asgard\Http\Request $request) {
-        if(!($this->product = \Catalog\Entities\Product::load($request['id'])))
-            $this->notfound();
+	/**
+	 * @Route(":id")
+	 */
+	public function showAction(\Asgard\Http\Request $request) {
+		if(!($this->product = \Catalog\Entities\Product::load($request['id'])))
+			$this->notfound();
 
-        $review = new \Catalog\Entities\Review(['product_id'=>$this->product->id]);
-        $this->form = $this->$container->make('entityForm', [$review]);
-        if($this->form->sent()) {
-            try {
-                $this->form->save();
-                $this->form->reset();
-                $this->getFlash()->addSuccess('Your review was posted with success. Thank you.');
-            } catch(\Asgard\Form\FormException $e) {
-                $this->getFlash()->addError($e->errors);
-            }
-        }
-    }
+		$review = new \Catalog\Entities\Review(['product_id'=>$this->product->id]);
+		$this->form = $this->$container->make('entityForm', [$review]);
+		if($this->form->sent()) {
+			try {
+				$this->form->save();
+				$this->form->reset();
+				$this->getFlash()->addSuccess('Your review was posted with success. Thank you.');
+			} catch(\Asgard\Form\FormException $e) {
+				$this->getFlash()->addError($e->errors);
+			}
+		}
+	}
 
 Here we create an EntityForm for the entity Review. The EntityForm will create the appropriate fields for the entity properties and save the entity if the input is valid.
 
