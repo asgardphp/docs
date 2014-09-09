@@ -14,7 +14,7 @@
 
 The installation is very straightforward. Open a console, go to your web directory and run:
 
-	composer create-project asgardphp/starter [folder] --stability dev
+	composer create-project asgardphp/starter [folder]
 
 Don't forget to replace [folder] with the location of your new project.
 
