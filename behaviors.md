@@ -18,7 +18,7 @@ The Behaviors package provides some behaviors ready to use out-of-the-box for yo
 In your composer file:
 
     "require": {
-        "asgard/behaviors": "dev-master"
+        "asgard/behaviors": "0.*"
 	}
 
 <a name="metas"></a>

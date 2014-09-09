@@ -17,7 +17,7 @@ Bag object offers several methods to manipulate a $data property and it implemen
 In your composer file:
 
     "require": {
-        "asgard/common": "dev-master"
+        "asgard/common": "0.*"
 	}
 
 <a name="usage"></a>

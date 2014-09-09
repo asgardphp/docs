@@ -20,7 +20,7 @@ Data is package for key-value database storage.
 In your composer file:
 
     "require": {
-        "asgard/data": "dev-master"
+        "asgard/data": "0.*"
 	}
 
 <a name="usage-asgard"></a>

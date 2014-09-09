@@ -63,7 +63,7 @@ Composer dependencies should be in composer.json as for any composer project:
 			"email": "michel@hognerud.net"
 		}],
 		"require": {
-	        "asgard/entityimage": "dev-master",
-	        "asgard/asgard": "dev-master"
+	        "asgard/entityimage": "0.*",
+	        "asgard/asgard": "0.*"
 		}
 	}

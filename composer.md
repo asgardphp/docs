@@ -8,7 +8,7 @@ Composer is a package that makes easier to execute scripts when a package is ins
 <a name="installation"></a>
 ##Installation
 
-	composer require asgard/composer @dev
+	composer require asgard/composer 0.*
 
 <a name="usage"></a>
 ##Usage

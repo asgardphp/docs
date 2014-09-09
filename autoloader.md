@@ -16,7 +16,7 @@ The Asgard Autoloader supports PSR-4 and provides some additional features that 
 In your composer file:
 
     "require": {
-        "asgard/autoloader": "dev-master"
+        "asgard/autoloader": "0.*"
 	}
 
 <a name="usage"></a>

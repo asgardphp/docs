@@ -21,7 +21,7 @@ If you have ever used an event manager, you will find the Hooks component very s
 In your composer file:
 
     "require": {
-        "asgard/hook": "dev-master"
+        "asgard/hook": "0.*"
 	}
 
 <a name="usage-asgard"></a>
