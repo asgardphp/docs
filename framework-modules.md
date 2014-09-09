@@ -10,11 +10,11 @@ Modules can be used to quickly extend your application with new features that yo
 
 To install a module, run:
 
-	php console install [source] --migrate --update-composer
+	php console install [source=tag] --migrate --update-composer
 
-[source] must be a git repository, e.g. https://github.com/asgardmodules/admin.git
+[source=tag] must be a git repository with a tag name, e.g. https://github.com/asgardmodules/admin.git=v0.1.0
 
-If the module has any module dependency, it will install it before. Then this command will download the module and copy its folders app/, migrations/, tests/, config/ web/ to your project.
+If the module has any module dependencies, it will install them beforehand. Then this command will download the module and copy its folders app/, migrations/, tests/, config/ web/ to your project.
 
 --migrate is an option to automatically migrate the migrations after the module was added. If this option is not provided, the module migrations will still be added to your application migrations, but not automatically executed.
 
