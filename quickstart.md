@@ -98,7 +98,7 @@ If you dive in app/Admin/ you will see that a typical bundle is made of:
 
 If you now open Controllers/NewsController.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open html/news/index.php
 
-The default view is pretty simple and a bit boring.. but we can improve it:
+The default view is pretty simple and a bit boring.. but we can improve it and replace it with:
 
 	<?php foreach($list as $news): ?>
 	<h2><?=$news?></h2>
@@ -227,7 +227,7 @@ First, we create the form with 4 fields. One for the search term, one for the mi
 
 Then if the form was posted, we perform the search, otherwise we select all products. To retrieve the product that meet the criteria, we use the ORM. With the ORM we search for products whose name contains the term, whose price is greater than min and less than max, and whose category corresponds to the one selected.
 
-That's it for the action so let's now move to the view in Catalog/html/product/search.php:
+That's it for the action so let's now move to the view in Catalog/html/product/search.php and update it with:
 
 	<?=$form->open()?>
 	<?=$form['term']->label()?>: <?=$form['term']->def()?><br>
@@ -253,7 +253,7 @@ First we display the form we have constructed in the action, then we display wit
 ##Products reviews
 The final addition to our website will be a review system for our products. For that we will modify the action showAction to make a form to add reviews, and display them.
 
-But before, let's create the Review entity in Catalog/Entites/Review.php
+But before, let's create the Review entity in Catalog/Entites/Review.php:
 
 	<?php
 	namespace Catalog\Entities;
