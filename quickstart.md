@@ -96,7 +96,7 @@ If you dive in app/Admin/ you will see that a typical bundle is made of:
 * html/ (contains your html templates)
 * Bundle.php (initialization functions)
 
-If you now open Controllers/NewsController.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open html/news/index.php
+If you now open app/News/Controllers/NewsController.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open html/news/index.php
 
 The default view is pretty simple and a bit boring.. but we can improve it and replace it with:
 
