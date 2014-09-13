@@ -12,13 +12,9 @@ Bag object offers several methods to manipulate a $data property and it implemen
 
 <a name="installation"></a>
 ##Installation
-**If you are using the Asgard Framework you don't need to install this library as it part of the default libraries that Asgard uses.**
+**If you are working on an Asgard project you don't need to install this library as it is already part of the standard libraries.**
 
-In your composer file:
-
-    "require": {
-        "asgard/common": "0.*"
-	}
+	composer require asgard/common 0.*
 
 <a name="usage"></a>
 ##Usage
