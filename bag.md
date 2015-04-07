@@ -1,6 +1,6 @@
 #Common\Bag
 
-Bag object offers several methods to manipulate a $data property and it implements \ArrayAccess so that you can use the object as an array.
+Bag object offers several methods to manipulate a set of nested parameters and it implements \ArrayAccess so that you can use it as an array.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -8,7 +8,10 @@ Bag object offers several methods to manipulate a $data property and it implemen
 - [Getting the whole array](#whole-array)
 - [Setting a key](#setting-key)
 - [Checking existence](#checking-existence)
-- [Removing a key](#removing-key)
+- [Removing a key](#deleting-key)
+- [Clear](#clear)
+- [Clear and set](#setall)
+- [Count](#count)
 
 <a name="installation"></a>
 ##Installation
@@ -62,9 +65,24 @@ Null is returned when the key does not exist.
 	#or
 	isset($bag['key1.key2.key3']);
 
-<a name="removing-key"></a>
-##Removing a key
+<a name="deleting-key"></a>
+##Deleting a key
 
-	$bag->remove('key1.key2.key3');
+	$bag->delete('key1.key2.key3');
 	#or
 	unset($bag['key1.key2.key3']);
+
+<a name="clear"></a>
+##Clear all
+
+	$bag->clear();
+
+<a name="setall"></a>
+##Clear and set
+
+	$bag->setAll(['foo' => 1, 'bar' => 2]);
+
+<a name="count"></a>
+##Count
+
+	$bag->count();

@@ -97,22 +97,22 @@ Bundle.php contains a class called Bundle which extends \Asgard\Core\BundleLoade
 	namespace MyBundle;
 
 	class Bundle extends \Asgard\Core\BundleLoader {
-		public function buildContainer(container) {
+		public function buildContainer(\Asgard\Container\ContainerInterface container) {
 			// ...
 		}
 
-		public function run(container) {
+		public function run(\Asgard\Container\ContainerInterface container) {
 			parent::run(container);
 
 			// ...
 		}
 	}
 
-The method buildContainer(container) is used to create the [application services container](docs/container). Here, add all your services to the container.
+The method buildContainer($container) is used to create the [application services container](docs/container). Here, add all your services to the container.
 
-The method run(container) is used to bootstrap your bundle. Put here the code that needs to be executed during the loading of the application.
+The method run($container) is used to bootstrap your bundle. Put here the code that needs to be executed during the loading of the application.
 
-The parent run method automatically loads your bundle controllers, translations, commands and hooks so if you want to keep this behavior, don't remove the line "parent::run(container);".
+The parent run method automatically loads your bundle controllers, translations, commands and hooks so if you want to keep this behavior, don't remove the line "parent::run($container);".
 
 You can also override the following methods:
 
@@ -127,36 +127,38 @@ Use the [Core/BundleLoader.php](https://github.com/asgardphp/asgard/blob/master/
 The last two are only called when the application is in console mode.
 
 <a name="services"></a>
-##Services
+##Services container
 
 A service is an object with specific responsibilities, as part of the application. Asgard provides some services by default:
 
-	cache				Asgard\Cache\Cache
-	config				Asgard\Config\Config
+	cache				Asgard\Cache\CacheInterface
+	config				Asgard\Config\ConfigInterface
 	console				Asgard\Console\Application
-	cookiemanager		Asgard\Http\CookieManager
-	db					Asgard\Db\DB
+	cookiemanager		Asgard\Common\BagInterface
+	db					Asgard\Db\DBInterface
 	email				Asgard\Email\SwiftEmail
-	entitiesmanager		Asgard\Entity\EntitiesManager
-	entityfieldssolver	Asgard\Entityform\EntityFieldsSolver
-	entityform			Asgard\Entityform\EntityForm
+	entitymanager		Asgard\Entity\EntityManagerInterface
+	entityfieldsolver	Asgard\Entityform\EntityFieldSolverInterface
+	entityform			Asgard\Entityform\EntityFormInterface
 	errorhandler		Asgard\Debug\ErrorHandler
-	form				Asgard\Form\Form
-	hooks				Asgard\Hook\HooksManager
-	html				Asgard\Http\Utils\HTML
+	flash				Asgard\Http\Utils\Flash
+	form				Asgard\Form\FormInterface
+	hooks				Asgard\Hook\HookManagerInterface
+	html				Asgard\Http\Utils\HTMLInterface
 	httpkernel			Asgard\Http\HttpKernel
+	intl				Asgard\Common\Intl
 	kernel				Asgard\Core\Kernel
 	logger				Logger
-	migrationsmanager	Asgard\Migration\MigrationsManager
-	paginator			Asgard\Common\Paginator
-	resolver			Asgard\Http\Resolver
-	response			Asgard\Http\Response
-	rulesregistry		Asgard\Validation\RulesRegistry
-	schema				Asgard\Db\Schema
-	translator			Symfony\Component\Translation\Translator
-	url					Asgard\Http\URL
-	validator			Asgard\Validation\Validator
-	widgetsmanager		Asgard\Form\WidgetsManager
+	migrationmanager	Asgard\Migration\MigrationManagerInterface
+	paginator			Asgard\Common\PaginatorInterface
+	resolver			Asgard\Http\ResolverInterface
+	rulesregistry		Asgard\Validation\RulesRegistryInterface
+	schema				Asgard\Db\SchemaInterface
+	session				Asgard\Common\BagInterface
+	translator			Symfony\Component\Translation\TranslatorInterface
+	url					Asgard\Http\URLInterface
+	validator			Asgard\Validation\ValidatorInterface
+	widgetmanager		Asgard\Form\WidgetManagerInterface
 
 See what services your project contains with:
 

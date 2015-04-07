@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/asgardphp/behaviors.svg?branch=master)](https://travis-ci.org/asgardphp/behaviors)
 
-The Behaviors package provides some behaviors ready to use out-of-the-box for your entities.
+The Behaviors package provides some behaviors ready to use out-of-the-box for your entities. This page defines what the usage, the properties, the hooks and the methods brought by the behavior.
 
 - [Installation](#installation)
 - [MetasBehavior](#metas)
@@ -157,12 +157,12 @@ In your entity definition:
 	created_at:
 		type: datetime
 		required: false
-		default: function() { return \Carbon\Carbon::now(); }
+		default: function() { return \Asgard\Common\Datetime::now(); }
 		editable: false
 	updated_at:
 		type: datetime
 		required: false
-		default: function() { return \Carbon\Carbon::now(); }
+		default: function() { return \Asgard\Common\Datetime::now(); }
 		editable: false
 
 ###Hooks

@@ -12,7 +12,7 @@ The HTML class helps to build the HTML page.
 
 	$html = $container['html'];
 	
-The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
+The [container](docs/container) is often accessible as a method parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 ###Usage outside the Asgard Framework
 
@@ -214,8 +214,7 @@ All the get, post, put and delete methods return a \Asgard\Http\Response object.
 
 ###Example
 
-	$container = \Asgard\Container\Container::singleton();
-	$browser = new \Asgard\Http\Browser\Browser($container);
+	$browser = new \Asgard\Http\Browser\Browser($httpKernel, $container);
 	$browser->getSession()->set('admin_id', 123);
 	
 	$response = $browser->post('admin/news/new');
@@ -224,3 +223,5 @@ All the get, post, put and delete methods return a \Asgard\Http\Response object.
 		echo 'error..';
 	else
 		echo $response->getContent();
+
+The container is optional, and is only used to replace the session service during the request processing.

@@ -26,7 +26,7 @@ In config/database.yml:
 
 	$db = $container['db'];
 
-The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
+The [container](docs/container) is often accessible as a method parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-asgard"></a>
 ##Usage outside the Asgard Framework
@@ -71,7 +71,7 @@ Get the first row only:
 
 	$row = $db->first();
 
-Get the number of affeted rows:
+Get the number of affected rows:
 
 	$count = $db->query('DELETE FROM foo')->affected();
 
@@ -94,3 +94,9 @@ Commit:
 Rollback
 
 	$db->rollback();
+
+//todo
+getPDO
+get symfony connection
+getSchema
+dal

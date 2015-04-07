@@ -28,7 +28,7 @@ The response object is then sent to the client. It will send the HTTP headers an
 
 	$request = \Asgard\Http\Request::createFromGlobals();
 
-This will use global variables such as $_POST, $_GET, $_SESSION, etc. to create the object.
+This will use global variables such as $_POST, $_GET, $_COOKIE, etc. to create the object.
 
 ###Accessing inputs
 
@@ -36,11 +36,10 @@ You can access all the request variables like:
 
 	$request->url; #URL
 	$request->get; #$_GET
-	$request->post; #$_GET
-	$request->file; #$_GET
-	$request->server; #$_GET
-	$request->cookie; #$_GET
-	$request->session; #$_GET
+	$request->post; #$_POST
+	$request->file; #$_FILEs
+	$request->server; #$_SERVER
+	$request->cookie; #$_COOKIE
 	$request->header; #getallheaders()
 	$request->body; #php://input
 
@@ -62,17 +61,17 @@ To check for an variable existence, use isset or has:
 	#or
 	isset($request->get['id']);
 
-To set cookies or session, use:
+To set cookies, use:
 
 	$request->cookies['id'] = 3; #domain=/ and time=infinite
 	#or
 	$request->cookies->set('id', 3, $domain, $time);
 
-To unset a cookie or a session variable:
+To unset a cookie variable:
 
-	unset($request->session['id']);
+	unset($request->cookies['id']);
 	#or
-	$request->session->remove('id');
+	$request->cookies->delete('id');
 
 ###URL Object
 

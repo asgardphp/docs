@@ -15,15 +15,14 @@ Relations must be defined in the entity definition method. For example:
 	namespace Blog\Entities\Post;
 
 	class Post extends \Asgard\Entity\Entity {
-		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+		public static function definition(\Asgard\Entity\Definition $definition) {
 			$definition->properties = [
-				'title', 'content'
-			];
-
-			$definition->relations = [
+				'title',
+				'content',
 				'tags' => [
+					'type' => 'entity',
 					'entity' => 'Blog\Entities\Tag',
-					'has'    => 'many'
+					'many'    => true
 				],
 			];
 
@@ -39,18 +38,18 @@ There are four types of relations between entities as described below.
 ##hasOne: one <-> one
 
 	#Blog\Entities\Member
-	$definition->relations = [
+	$definition->properties = [
 		'position' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Position',
-			'has'    => 'one'
 		]
 	];
 
 	#Blog\Entities\Position
-	$definition->relations = [
+	$definition->properties = [
 		'member' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Member',
-			'has'    => 'one'
 		]
 	];
 
@@ -58,18 +57,18 @@ There are four types of relations between entities as described below.
 ##hasMany: many <-> one
 
 	#Blog\Entities\Post
-	$definition->relations = [
+	$definition->properties = [
 		'comments' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Comment',
-			'has'    => 'many'
 		]
 	];
 
 	#Blog\Entities\Comment
-	$definition->relations = [
+	$definition->properties = [
 		'post' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Post',
-			'has'    => 'one'
 		]
 	];
 
@@ -77,18 +76,19 @@ There are four types of relations between entities as described below.
 ##belongsTo: one <-> many
 
 	#Blog\Entities\Post
-	$definition->relations = [
+	$definition->properties = [
 		'category' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Category',
-			'has'    => 'one'
 		]
 	];
 
 	#Blog\Entities\Category
-	$definition->relations = [
+	$definition->properties = [
 		'posts' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Post',
-			'has'    => 'many'
+			'many'    => true
 		]
 	];
 
@@ -96,17 +96,19 @@ There are four types of relations between entities as described below.
 ##HMABT (HasManyAndBelongsTo): one <-> one
 
 	#Blog\Entities\Post
-	$definition->relations = [
+	$definition->properties = [
 		'tags' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Tag',
-			'has'    => 'many'
+			'many'    => true
 		]
 	];
 
 	#Blog\Entities\Tag
-	$definition->relations = [
+	$definition->properties = [
 		'posts' => [
+			'type' => 'entity',
 			'entity' => 'Blog\Entities\Post',
-			'has'    => 'many'
+			'many'    => true
 		]
 	];

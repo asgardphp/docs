@@ -19,22 +19,26 @@ To connect to the database and make SQL queries. [See the documentation.](docs/d
 
 To build SQL queries in a Object-Oriented manner. [See the documentation.](docs/db-dal)
 
-	$rows = $dal->from('news')->orderBy('id DESC')->all();
+	$rows = $db-dal->from('news')->orderBy('id DESC')->all();
 
 ##Schema
 
 Build, modify and drop tables. [See the documentation.](docs/db-schema)
 
 	schema->table('news', function($table) {
-		$table->add('id', 'int(11)')
-			->autoincrement()
-			->primary();	
-		$table->add('created_at', 'datetime')
-			->nullable();	
-		$table->add('updated_at', 'datetime')
-			->nullable();	
-		$table->add('title', 'varchar(255)')
-			->nullable();
+		$table->addColumn('id', 'integer', [
+			'length' => 11,
+			'autoincrement' => true,
+		]);
+		$table->addColumn('created_at', 'datetime', [
+		]);
+		$table->addColumn('updated_at', 'datetime', [
+		]);
+		$table->addColumn('title', 'string', [
+			'length' => '255',
+		]);
+
+		$table->setPrimaryKey(['id']);
 	});
 
 ##Commands

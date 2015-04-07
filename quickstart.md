@@ -16,7 +16,7 @@ Here is a 1 hour tutorial that will give you a taste of Asgard and discover how 
 
 However this tutorial is only meant to introduce you to Asgard, and as such it does not intend to provide detailed documentation. For more information please refer to the documentation.
 
-If you encounter any trouble, [please let us know](https://github.com/asgardphp/docs/issues).
+If you encounter any trouble, [please let me know](https://github.com/asgardphp/docs/issues).
 
 <a name="requirements"></a>
 ##Requirements
@@ -116,7 +116,7 @@ Good job! But installing an existing module was a bit too easy and we won't alwa
 To make things faster, Asgard provides a tool that will generate most of the code for us, based on our instructions which come in the form of a YAML file. For example, for our new products catalog, we will use:
 
 	Catalog:
-	  Entities:
+	  entities:
 	    Product:
 	      properties:
 	        name:
@@ -124,24 +124,27 @@ To make things faster, Asgard provides a tool that will generate most of the cod
 	        image:
 	          type: image
 	          web: true
-	      relations:
 	        category:
+	          type: entity
 	          entity: Catalog\Entities\Category
 	          has: one
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
-	      admin: true
 	      front: true
 	    Category:
 	      meta:
 	        plural: categories
 	      properties:
 	        name:
-	      relations:
 	        products:
+	          type: entity
 	          entity: Catalog\Entities\Product
 	          has: many
-	      admin: true
+	  admin:
+	    entities:
+	      Product:
+	        relations: [category]
+	      Category:
 	  tests: true
 
 So copy it, save it as a YAML file in your project directory, and run:
@@ -152,13 +155,11 @@ That's it, we have a products catalog with a back-office on our website. I guess
 
 Here we asked the generator to create a new bundle "Catalog" with two entities: Product and Category. First we define the Product entity. Its properties, its relation with Category, and we make it sortable by adding a behavior.
 
-Then, by saying "admin: true", we tell the generator that we want an admin interface for our new entity. "front: true" on the other hand, tells the generator to build the front controller.
-
-Same thing with Category excepts we don't generate the front controller.
+Then, in the "admin" section, we tell the generator that we want an admin interface for our new entities. "front: true" on the other hand, tells the generator to build the front controller.
 
 The last line, "tests: true", tells the generator to generate the functional tests but we will get back to it in the last section.
 
-**But what about the database?** Well, Asgard is here to help again.
+**What about the database?** Well, Asgard is here to help again.
 
 We have the entities Product and Category. By running the following command, Asgard will analyze these entities, generate a migration file for them, and execute it.
 
@@ -192,12 +193,12 @@ For our search form we will add the following action:
 	 * @Route("search")
 	 */
 	public function searchAction($request) {
-		$this->form = $this->$container->make('form', ['search']);
+		$this->form = $this->container->make('form', ['search']);
 		$this->form['term'] = new \Asgard\Form\Fields\TextField();
 		$this->form['min'] = new \Asgard\Form\Fields\TextField();
 		$this->form['max'] = new \Asgard\Form\Fields\TextField();
 		$choices = [];
-		foreach(\Catalog\Entities\Category::all() as $category)
+		foreach(\Catalog\Entities\Category::orm() as $category)
 			$choices[$category->id] = (string)$category;
 		$this->form['category'] = new \Asgard\Form\Fields\SelectField(['choices' => $choices]);
 
@@ -215,10 +216,8 @@ For our search form we will add the following action:
 				$orm->where(['price <= ?'=>$max]);
 			if($category !== null)
 				$orm->where('category_id', $category);
-			$this->products = $orm->get();
 		}
-		else
-			$this->products = $orm->get();
+		$this->products = $orm;
 	}
 
 As you may have guessed already, the url is products/search. However a bit of explanation is necessary to understand how the action works.
@@ -241,9 +240,9 @@ That's it for the action so let's now move to the view in Catalog/html/product/s
 
 	<?php foreach($products as $product): ?>
 	<p>
-		<b><?=$product?></b><br>
-		Price: <?=$product->price?><br>
-		Category: <?=$product->category?>
+	    <b><?=$product?></b><br>
+	    Price: <?=$product->price?><br>
+	    Category: <?=$product->category?>
 	</p>
 	<?php endforeach ?>
 
@@ -259,28 +258,27 @@ But before, let's create the Review entity in Catalog/Entites/Review.php:
 	namespace Catalog\Entities;
 
 	class Review extends \Asgard\Entity\Entity {
-		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+		public static function definition(\Asgard\Entity\Definition $definition) {
 			$definition->properties = [
 				'name',
 				'comment',
 				'rating' => 'integer',
-			];
-
-			$definition->relations = [
 				'product' => [
-					'has' => 'one',
+					'type' => 'entity',
 					'entity' => 'Catalog\Entities\Product'
 				]
 			];
 		}
 	}
 
-and mofidy Catalog/Entites/Product.php's relations:
+and modify Catalog/Entites/Product.php's properties:
 
-	$definition->relations = [
+	$definition->properties = [
+		//...
 		'reviews' => [
-			'has' => 'many',
-			'entity' => 'Catalog\Entities\Review'
+			'type' => 'entity',
+			'entity' => 'Catalog\Entities\Review',
+			'many' => true,
 		]
 	];
 
@@ -298,12 +296,12 @@ Then let's go back to our ProductController, to modify the showAction:
 			$this->notfound();
 
 		$review = new \Catalog\Entities\Review(['product_id'=>$this->product->id]);
-		$this->form = $this->$container->make('entityForm', [$review]);
+		$this->form = $this->container->make('entityForm', [$review]);
 		if($this->form->sent()) {
 			try {
 				$this->form->save();
 				$this->form->reset();
-				$this->getFlash()->addSuccess('Your review was posted with success. Thank you.');
+				$this->getFlash()->addSuccess('Your review was posted with success.');
 			} catch(\Asgard\Form\FormException $e) {
 				$this->getFlash()->addError($e->errors);
 			}
@@ -353,7 +351,7 @@ This executes the tests that are already in tests/. You might wonder which tests
 
 Actually, when we installed the news and the admin modules, their tests were automatically added to the tests folder.
 
-And when we generated the catalog bundle, the tests were partially automatically generated in tests/Catalog.php
+And when we generated the catalog bundle, the tests were partially automatically generated in tests/CatalogTest.php
 
 If you open this file you will notice that some tests are commented out. This is because their urls contains dynamic parameters that cannot be guessed so you will have to complete them manually.
 
@@ -378,10 +376,9 @@ But to make it more useful, let's replace it with:
 	\Catalog\Entities\Product::create(['name'=>'foofoo', 'price'=>13, 'category'=>5]); #not in
 
 	#Browser
-	$browser = $this->getBrowser();
+	$browser = $this->createBrowser();
 	$browser->get('products/search');
-	$formParser = new \Asgard\Http\Browser\FormParser();
-	$formParser->parse($browser->getLast()->getContent(), '//form');
+	$formParser = \Asgard\Http\Browser\FormParser::parse($browser->getLast()->getContent(), '//form');
 	$formParser->get('search[term]')->setValue('foo');
 	$formParser->get('search[min]')->setValue(10);
 	$formParser->get('search[max]')->setValue(20);
@@ -397,4 +394,4 @@ Now every time you will execute the tests, you will know whether your search for
 ##Conclusion
 Alright, we are done! I really hope you enjoyed this little journey with Asgard.
 
-Again, if you came across any difficulty or you just want to share a word, [contact us](about), join the [community](community) or [report an issue](https://github.com/asgardphp/docs/issues).
+Again, if you came across any difficulty or you just want to share a word, [contact me](http://asgardphp.com/about) or [report an issue](https://github.com/asgardphp/docs/issues).

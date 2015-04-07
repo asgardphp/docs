@@ -27,7 +27,7 @@ The cache is available through the service:
 <a name="usage-outside"></a>
 ##Usage outside the Asgard Framework
 
-	$cache = new \Asgard\Cache\Cache(new \Doctrine\Common\Cache\Cache());
+	$cache = new \Asgard\Cache\Cache(new \Doctrine\Common\Cache\Cache);
 
 <a name="array"></a>
 ##Array implementation

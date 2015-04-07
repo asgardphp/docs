@@ -67,3 +67,5 @@ Composer dependencies should be in composer.json as for any composer project:
 	        "asgard/asgard": "0.*"
 		}
 	}
+
+Asgard will automatically add them to your project's composer.json file.

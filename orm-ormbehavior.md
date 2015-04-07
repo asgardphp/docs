@@ -14,7 +14,7 @@ The ORMBehavior allows you to use your entities as in the ActiveRecord pattern.
 
 In the entity definition method
 
-	public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+	public static function definition(\Asgard\Entity\Definition $definition) {
 		$definition->behaviors = [
 			new \Asgard\Orm\ORMBehavior
 		];
@@ -54,14 +54,16 @@ Destroy an entity
 
 Create an entity
 
-	$post = Blog\Entities\Post::create(['title'=>'hello!', $force=false]); #if force=true, it skips the validation
+	$post = Blog\Entities\Post::create(['title'=>'hello!', $validationGroups=[]]);
+
+Validation groups ($validationGroups) define the set of rules to apply to the validation. [See the validation documenatation.](docs/validation)
 
 <a name="methods"></a>
 ##Methods
 
 Save an entity
 
-	$post->save(['title'=>'new title!'], $force=false); #if force=true, it skips the validation
+	$post->save(['title'=>'new title!'], $validationGroups=[]);
 
 Destroy an entity
 

@@ -18,7 +18,7 @@ The controller class is composed of actions. Each action handles a specific requ
 		}
 	}
 
-Here we have only one action called indexAction, which receives the request as a parameter.
+Here we have only one action called indexAction, which receives the request as a method parameter.
 
 <a name="validator"></a>
 ##Routing
@@ -149,9 +149,7 @@ The "after" methods of filters are executed after the action (or the "before" me
 ###Default views
 In Asgard, when a controller action is executed and does not provide its own view, the controller will try to automatically generate the view. 
 
-todo: [not in asgard, setcontrollerviewpathresolver()]
-
-When a controller is located in the Controllers folder of a bundle, it will for views in the bundle views/ folder. For example if the ProductController class is in bundle/Controllers/ProductController.php, and its action indexAction is executed, it will look for the view in bundle/views/product/index.php. If it exists it will use it to construct the response, otherwise the response will be empty.
+When a controller is located in the Controllers folder of a bundle, it will search for views in the bundle views/ folder. For example if the ProductController class is in bundle/Controllers/ProductController.php, and its action indexAction is executed, it will look for the view in bundle/views/product/index.php. If it exists it will use it to construct the response, otherwise the response will be empty.
 
 Before generating the view, the controller will extract all its properties into variables and pass them to the view. Hence, $this->header in the controller becomes $header in the php view file:
 

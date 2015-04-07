@@ -15,7 +15,7 @@ The DAL class lets you build queries in a object-oriented fashion.
 
 	$dal = $container->make('dal');
 	
-The [container](docs/container) is often accessible as a parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
+The [container](docs/container) is often accessible as a method parameter or through a [ContainerAware](docs/container#containeraware) object. You can also use the [singleton](docs/container#usage-outside) but it is not recommended.
 
 <a name="usage-outside"></a>
 ##Usage outside the Asgard Framework
@@ -23,6 +23,8 @@ The [container](docs/container) is often accessible as a parameter or through a 
 	$config = [/*..*/];
 	$db = new \Asgard\Db\DB($config);
 	$dal = new \Asgard\Db\DAL($db);
+	#or
+	$dal = $db->dal();
 
 <a name="query"></a>
 ##Building a query
@@ -65,11 +67,11 @@ Left join:
 
 Right join:
 
-	$dal->leftjoin('bar', 'foo.id=bar.foo_id');
+	$dal->rightjoin('bar', 'foo.id=bar.foo_id');
 
 Inner join: 
 
-	$dal->leftjoin('bar', 'foo.id=bar.foo_id');
+	$dal->innerjoin('bar', 'foo.id=bar.foo_id');
 
 ###Selecting tables
 
@@ -89,7 +91,7 @@ With aliases:
 
 With aliases:
 
-	$dal->select('title, id, content');
+	$dal->select('title as t, id as i, content as c');
 
 ###Offset
 
@@ -103,6 +105,10 @@ With aliases:
 
 	$dal->orderBy('title ASC');
 
+Reverse order:
+
+	$dal->reverse();
+
 ###Group by
 
 	$dal->orderBy('foo_id');
@@ -110,6 +116,8 @@ With aliases:
 ###Reset
 
 	$dal->reset();
+
+This resets conditions, offset, limit and order.
 
 <a name="select"></a>
 ##Select
@@ -122,9 +130,13 @@ Count results:
 
 	$dal->count(); #e.g. 5
 
+Count distinct results:
+
+	$dal->count('id'); #e.g. 5
+
 Group by:
 
-	$dal->count('foo_id'); #e.g. ['1' => 2, '2' => 5, '3' => 1]
+	$dal->count(null, 'foo_id'); #e.g. ['1' => 2, '2' => 5, '3' => 1]
 
 Get the minimum value of a column:
 
@@ -176,3 +188,14 @@ Group by:
 Deleting from specific tables:
 
 	$dal->from('foo, bar, bob')->delete(['foo', 'bar']);
+
+//todo even jointures for delete/update with sqlite and others
+//dbgSelect dbgUpdate dbgDelete dbgInsert
+//raw subqueries
+//while next
+//foreach
+//reset
+//first/last
+//get
+//paginate, setPaginatorFactory, getPaginator, 
+//groupBy

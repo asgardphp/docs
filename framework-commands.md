@@ -1,6 +1,7 @@
 #Commands
 
 - [Core commands](#core)
+  - [Compile](#compile)
   - [Console](#console)
   - [Down](#down)
   - [Execute](#execute)
@@ -10,6 +11,10 @@
   - [List](#list)
   - [Publish](#publish)
   - [Services](#services)
+  - [Publish](#publish)
+  - [Server](#server)
+  - [Show environment](#showenv)
+  - [Switch environment](#switchenv)
   - [Up](#up)
   - [Version](#version)
 - [Packages commands](#packages)
@@ -106,14 +111,32 @@ Usage:
 
 	php console publish [path to bundle]
 
-<a name="services"></a>
-###Services
+<a name="server"></a>
+###Server
 
-Show all the services loaded in the application.
+Run the PHP built-in server.
 
 Usage:
 
-	php console services
+	php console server [--host=localhost] [--port=8000]
+
+<a name="showenv"></a>
+###Show environment
+
+Show the current default environment.
+
+Usage:
+
+	php console env:show
+
+<a name="switchenv"></a>
+###Switch environment
+
+Switch the default environment.
+
+Usage:
+
+	php console env:switch [env]
 
 <a name="up"></a>
 ###Up
@@ -137,6 +160,7 @@ Usage:
 ##Packages commands
 
  * [Cache](docs/cache#commands)
+ * [Container](docs/container#commands)
  * [Config](docs/config-commands)
  * [DB](docs/db-commands)
  * [HTTP](docs/http-commands)

@@ -14,7 +14,7 @@ The admin module helps you create an administration that you can easily extend a
 
 Go to your project directory and run:
 
-	php console install git@github.com:asgardmodules/admin.git --migrate --update-composer
+	php console install git@github.com:asgardmodules/admin.git=v0.1.0 --migrate --update-composer
 
 This will add the files for the administration, migrate your database and update composer dependencies.
 
@@ -23,7 +23,7 @@ This will add the files for the administration, migrate your database and update
 
 ```text
 app/Admin/
-	Controller/
+	Controllers/
 		AdministratorAdminController.php	#To manage administrators
 		DefaultAdminController.php			#index and 404 actions
 		FilesController.php					#manage entity files
@@ -112,13 +112,13 @@ If you already have an entity that you want to be administrable, you can create 
 
 This is all you need to be able to list, create, edit and delete your article entities in your administration.
 
-The protected attribute $_entity tells the controller with entity class to manage.
+The protected attribute $_entity tells the controller which entity class to manage.
 
 The optional protected attribute $_singular tells the controller how to name entities in singular.
 
 The optional protected attribute $_plural tells the controller how to name entities in plural.
 
-In the method formConfigure you can customize the entity form. For example to add relations and fields, or to remove some.
+In the method formConfigure you can customize the entity form. For example to add relations and fields, or to remove esome.
 
 To customize the "index" action, override:
 
@@ -159,7 +159,9 @@ To customize the "delete" action, override:
 <a name="menus"></a>
 ##Menus
 
-Navigation bar:
+To customize the administration menus, add the following code in a bundle's run method.
+
+**Navigation bar:**
 
 	$container['adminMenu']->add([
 		'label' => __('News'),
@@ -168,7 +170,7 @@ Navigation bar:
 
 The last parameter gives the position of the item. This item will be in the first sub-menu of the navigation bar (Content). '0', would have replaced the "Content" item, while '0.' adds the item into the "Content" menu.
 
-Home menu:
+**Home menu:**
 
 	$container['adminMenu']->addHome([
 		'img' => $request->url->to('news/icon.svg'),
@@ -180,30 +182,32 @@ Home menu:
 <a name="generator"></a>
 ##Generator
 
-The admin generator hook will automatically create the entity admin controller and add items to the menus if you order it to do so.
+The admin generator hook will automatically create the entity admin controller and add items to the menus if you instruct it to do so.
 
 In your YAML generator file, for any entity for which you want to create a controller in the administration, add the following lines:
 
 ```yaml
 mybundle:
-	entities:
-	    article:
-	      properties:
-	        title:
-	        content:
-	      admin:
-	        form:
-	          title:
-	          content:
-	          	render: textarea
-	            params:
-	              attrs:
-	                class: test
-	        messages:
-	          modified: Article was modified.
-	          created: Article was created.
-	          many_deleted: Articles were deleted.
-	          deleted: Article was deleted.
+  entities:
+    article:
+      properties:
+        title:
+        content:
+  admin:
+    entities:
+	  article:
+	    form:
+	      title:
+	      content:
+	      	render: textarea
+	        params:
+	          attrs:
+	            class: test
+	    messages:
+	      modified: Article was modified.
+	      created: Article was created.
+	      many_deleted: Articles were deleted.
+	      deleted: Article was deleted.
 ```
 
 This generator file will build a bundle with an entity called "article" and everything you need to manage the entities in the administration.

@@ -63,13 +63,12 @@ The package comes with tools. [See the documentation.](docs/http-utils)
 
 ###Browser
 
-	$container = \Asgard\Container\Container::singleton();
-	$browser = new \Asgard\Http\Browser\Browser($container);
+	$browser = new \Asgard\Http\Browser\Browser($httpKernel, $container);
 	$browser->getSession()->set('admin_id', 123);
 	
-	$response = $browser->post('admin/news/new');
+	$response = $browser->post('admin/news/new', ['title'=>'foo']);
 
-	if($response->getCode() != 200)
+	if($response->getCode() !== 200)
 		echo 'error..';
 	else
 		echo $response->getContent();

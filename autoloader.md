@@ -1,6 +1,6 @@
 #Autoloader
 
-The Asgard Autoloader supports PSR-4 and provides some additional features that can be used besides the composer autoloader.
+The Asgard Autoloader supports PSR-4 and provides some additional features that can be used in addition to the composer autoloader.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -34,6 +34,8 @@ Asgard autoloader however does it if you enable it:
 <a name="global-classes"></a>
 ##Global classes
 
+//todo global replaced with search
+
 When using a class without namespace, the autoloader will search for the class in the existing or registered ones whose class name is the same.
 
 For example if the class \Namespace\Class exists or is registered via $autoloader->map($class, $file), and you call \Class, the autoloader will be smart enough to alias \Class to \Namespace\Class, but only if there is only class with the same name.
@@ -46,24 +48,31 @@ By combining global and nestedNamespace, the autoloader will be able to match cl
 
 <a name="namespace-mapping"></a>
 ##Namespace mapping
+
+//todo mapNamespace replaced with namespaceMap
+
 Like with composer, you can map a namespace to a specific directory:
 
 	$autoloader->mapNamespace('Namespace', 'myclasses/');
 
 <a name="class-mapping"></a>
 ##Class mapping
+
 Like the composer autoloader, you can map a class to a specific file:
 
 	$autoloader->map('MyClass', 'myclass.php');
 
 <a name="preloading-files"></a>
 ##Preloading files
+
+//todo preload is only to enable preload. Need to call preloadDir preloadFile
+
 You can ask the autoloader to analyse a folder's files whose names start with a capital to help it find global classes:
 
-	$autoloader->preload('classes/');
+	$autoloader->preloadDir('classes/');
 
-Files like classes\Subfolder\MyClass.php will be mapped to class \MyClass. This preloading can be cached if you provide the autoloader with a cache driver:
+	$autoloader->preloadFile('classes/MyClass.php');
+
+Files like classes\Subfolder\MyClass.php will be mapped to class \MyClass. The preloading can be cached if you provide the autoloader with a cache driver:
 
 	$autoloader->setCache(new \Asgard\Cache\ApcCache());
-
-#todo ^^^^

@@ -17,15 +17,14 @@ To define relations between entities, please read [ORM Relations](docs/orm-relat
 	namespace Blog\Entities\Post;
 
 	class Post extends \Asgard\Entity\Entity {
-		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+		public static function definition(\Asgard\Entity\Definition $definition) {
 			$definition->properties = [
-				'title', 'content'
-			];
-
-			$definition->relations = [
+				'title',
+				'content',
 				'tags' => [
+					'type' => 'entity',
 					'entity' => 'Blog\Entities\Tag',
-					'has'    => 'many'
+					'many'    => true
 				],
 			];
 

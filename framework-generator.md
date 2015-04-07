@@ -51,10 +51,9 @@ Please refer to the [entity documentation](docs/entity).
 	        image:
 	          type: image
 	          web: true
-	      relations:
 	        category:
+	          type: entity
 	          entity: Bundle1\Entities\Category
-	          has: one
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
 	    Category:
@@ -62,10 +61,10 @@ Please refer to the [entity documentation](docs/entity).
 	        plural: categorys
 	      properties:
 	        name:
-	      relations:
 	        products:
+	          type: entity
 	          entity: Bundle1\Entities\Product
-	          has: many
+	          many: true
 
 This will generate the following entities, in app/Bundle1/Entities/Product.php:
 
@@ -73,42 +72,35 @@ This will generate the following entities, in app/Bundle1/Entities/Product.php:
 	namespace Bundle1\Entities;
 
 	class Product extends \Asgard\Entity\Entity {
-		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+		public static function definition(\Asgard\Entity\Definition $definition) {
 			$definition->properties = [
-			'nom'	=>	[
-				'type'	=>	NULL,
-			],
-			'description'	=>	[
-				'type'	=>	'longtext',
-			],
-			'prix'	=>	[
-				'type'	=>	'integer',
-			],
-			'image'	=>	[
-				'type'	=>	'file',
-				'multiple' => true,
-				'web'	=>	true
-			],
-			];
-
-			$definition->relations = [
+				'name'	=>	[
+					'type'	=>	NULL,
+				],
+				'description'	=>	[
+					'type'	=>	'text',
+				],
+				'prix'	=>	[
+					'type'	=>	'integer',
+				],
+				'image'	=>	[
+					'type'	=>	'file',
+					'many' => true,
+					'web'	=>	true
+				],
 				'category' => [
+					'type' => 'entity',
 					'entity' => 'Bundle1\Entities\Category',
-					'has' => 'one'
 				]
 			];
-
-			$definition->behaviors = [
-				];
-			
-			}
+		}
 		
 		public function __toString() {
-			return (string)$this->nom;
+			return (string)$this->name;
 		}
 
 		public function url() {
-			return static::$container['resolver']->url_for(['Bundle1\Controllers\ProductController', 'show'], array('id'=>$this->id));
+			return $this->getDefinition()->getContainer()['resolver']->url(['Bundle1\Controllers\ProductController', 'show'], array('id'=>$this->id));
 		}
 	}
 
@@ -118,31 +110,25 @@ And app/Bundle1/Entities/Category.php
 	namespace Bundle1\Entities;
 
 	class Category extends \Asgard\Entity\Entity {
-		public static function definition(\Asgard\Entity\EntityDefinition $definition) {
+		public static function definition(\Asgard\Entity\Definition $definition) {
 			$definition->properties = [
-			'nom'	=>	[
-				'type'	=>	NULL,
-			],
-			];
-
-			$definition->relations = [
+				'name'	=>	[
+					'type'	=>	NULL,
+				],
 				'products' => [
+					'type' => 'entity',
 					'entity' => 'Bundle1\Entities\Product',
-					'has' => 'many'
+					'many' => true,
 				]
 			];
-
-			$definition->behaviors = [
-				];
-			
-			}
+		}
 		
 		public function __toString() {
-			return (string)$this->nom;
+			return (string)$this->name;
 		}
 
 		public function url() {
-			return static::$container['resolver']->url_for(['Bundle1\Controllers\CategoryController', 'show'], array('id'=>$this->id));
+			return $this->getDefinition()->getContainer()['resolver']->url(['Bundle1\Controllers\CategoryController', 'show'], array('id'=>$this->id));
 		}
 	}
 
@@ -278,25 +264,21 @@ The instructions must be written in a YAML file. For example:
 	        image:
 	          type: image
 	          web: true
-	      relations:
 	        category:
+	          type: entity
 	          entity: Bundle1\Entities\Category
-	          has: one
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
-	      admin:
-	        relations: [category]
 	      front: true
 	    Category:
 	      meta:
 	        plural: categorys
 	      properties:
 	        name:
-	      relations:
 	        products:
+	          type: entity
 	          entity: Bundle1\Entities\Product
-	          has: many
-	      admin: true
+	          many: true
 		controllers:
 		  Member:
 		    prefix: members
@@ -311,9 +293,7 @@ The instructions must be written in a YAML file. For example:
 		        viewFile: /path/to/memberprofile.html
 	  tests: true
 
-Here we are building a single bundle called "Bundle1". In that bundle we are creating two entities "Product" and "Category". The "Product" entity has the following properties: name, price and image, the relation "category" and the bahavior "\Asgard\Behaviors\SortableBehavior".
-
-We tell the generator to build the admin interface for the entity and to add a field for the relation "category" in the admin form. We also tell the generator to build a front controller.
+Here we are building a single bundle called "Bundle1". In that bundle we are creating two entities "Product" and "Category". The "Product" entity has the following properties: name, price and image, the relation "category" and the bahavior "\Asgard\Behaviors\SortableBehavior". We also tell the generator to build a front controller.
 
 It's pretty similar for the Category entity, except that we need to tell the generator that the plural form of "category" is "categorys" (otherwise it would use "categorys" by default), and we do not generate a front controller for the categorys.
 

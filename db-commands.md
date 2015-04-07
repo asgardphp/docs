@@ -1,18 +1,17 @@
 #DB Commands
 
-- [Dump](#dump)
+- [Create](#create)
 - [Empty](#empty)
 - [Init](#init)
-- [Restore](#restore)
 
-<a name="dump"></a>
-##Dump
+<a name="create"></a>
+##Create
 
-Dump the MySQL database into a file.
+This will try to create the database.
 
 Usage:
 
-	php console db:dump [destination]
+	php console db:create
 
 <a name="empty"></a>
 ##Empty
@@ -31,12 +30,3 @@ Initialize the database configuration.
 Usage:
 
 	php console db:init
-
-<a name="restore"></a>
-##Restore
-
-Restore the database from an SQL file.
-
-Usage:
-
-	php console db:restore [source]

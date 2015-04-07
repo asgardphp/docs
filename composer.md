@@ -22,4 +22,6 @@ Create a composer/ folder in your project root and add the PHP files correspondi
 	isInstalled		composer/isInstalled.php
 	supports		composer/supports.php
 
+[An example of the install.php script.](https://github.com/asgardphp/starter/blob/master/composer/install.php)
+
 For more information, please check the [BundleInstaller.php source code](https://github.com/asgardphp/composer/blob/master/BundleInstaller.php) and [composer documentation](https://getcomposer.org/doc/articles/custom-installers.md).
