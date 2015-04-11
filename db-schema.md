@@ -1,11 +1,12 @@
 #Schema
 
-Schema lets you build and modify sql tables.
+Schema lets you build and modify sql tables. It uses the Doctrine DBAL and the API is very similar. [Please see their documentation.](http://doctrine-dbal.readthedocs.org/en/latest/index.html)
 
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
 - [Creating a table](#create)
 - [Modifying a table](#modify)
+- [Indexes](#indexes)
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework
@@ -24,96 +25,52 @@ The [container](docs/container) is often accessible as a method parameter or thr
 	$schema = $db->getSchema();
 
 <a name="create"></a>
-##Creating a table
-
-//todo refaire le code
+##Creating a table with columns
 
 	$schema->create('news', function($table) {
-		$table->add('id', 'int(11)')
-		      ->add('title', 'varchar(100)');
-	})
-
-Inside the function, you create the columns like the id column in the previous example.
-
-For each column you must give its name and its type with the length between brackets.
-
-You can also modify a column.
-
-Nullable:
-//todo refaire le code
-
-	$table->add('title', 'varchar(100)')->nullable();
-
-Default value:
-//todo refaire le code
-
-	$table->add('title', 'varchar(100)')->def('abc');
-
-Autoincrement:
-//todo refaire le code
-
-	$table->add('title', 'varchar(100)')->autoincrement();
-
-Primary key:
-//todo refaire le code
-
-	$table->add('title', 'varchar(100)')->primary();
-
-Unique key:
-//todo refaire le code
-
-	$table->add('title', 'varchar(100)')->unique();
-
-Index key:
-//todo refaire le code
-
-	$table->add('title', 'varchar(100)')->index();
+		$table->addColumn('id', 'integer', [
+			'length' => 11
+		]);
+		$table->addColumn('score', 'decimal', [
+			'length'   => 50,
+			'precision'=> 5,
+			'scale'    => 5,
+			'notnull'  => true, #false by default
+			'default'  => 'foo',
+			'unsigned' => true,
+			'fixed'    => true,
+		]);
+	});
 
 <a name="modify"></a>
 ##Modifying an existing table
-
-Adding a column:
 
 	$schema->table('news', function() {
 		//...
 	});
 
-Inside the function you can modify, remove and add columns:
-//todo refaire le code
+Inside the callback you can modify, remove and add new columns:
 
 	//...
-		$table->add('id', 'int(11)');
+		$table->addColumn('id', 'integer', [/*...*/]);
 	//...
 
 Modifying a column:
-//todo refaire le code
 
-	$table->col('id')->nullable();
-	$table->col('id')->notNullable();
-	$table->col('id')->rename('identifier');
-	$table->col('id')->def('abc');
-	$table->col('id')->first();
-	$table->col('id')->after('title');
-	$table->col('id')->autoincrement();
-	$table->col('id')->notAutoincrement();
-	$table->col('id')->dropIndex();
-	$table->col('id')->primary();
-	$table->col('id')->unique();
-	$table->col('id')->index();
-	$table->col('id')->type('varchar(25)');
+	$table->changeColumn('title', [
+		'type'     => 'string',
+		'length'   => 50,
+		'precision'=> 5,
+		'scale'    => 5,
+		'notnull'  => true, #false by default
+		'default'  => 'foo',
+		'unsigned' => true,
+		'fixed'    => true,
+	]);
 
 Removing a column:
-//todo refaire le code
 
-	$table->drop('id');
-
-Setting new primary keys:
-//todo refaire le code
-
-	#one
-	$table->primary('id');
-	#multiple
-	$table->primary(['id', 'title']);
+	$table->dropColumn('id');
 
 Emptying a table
 
@@ -130,3 +87,42 @@ Removing all tables
 Renaming all tables
 
 	$schema->rename('foo', 'bar');
+
+##Indexes
+
+Set the primary key:
+
+	#single column
+	$table->setPrimaryKey(['id', 'title']);
+	#multiple columns
+	$table->setPrimaryKey(['id', 'title']);
+
+Create a unique index:
+
+	$schema->table('test', function($table) {
+		$table->addUniqueIndex(['title'], 'title_index'); #index name is optional
+	});
+
+Create an simple index:
+
+	$schema->table('test', function($table) {
+		$table->addIndex(['title'], 'title_index'); #index name is optional
+	});
+
+Rename an index:
+
+	$schema->table('test', function() {
+		$table->renameIndex('title_index', 'new_index');
+	});
+
+Drop an index:
+
+	$schema->table('test', function() {
+		$table->dropIndex('title_index', 'new_index');
+	});
+
+Drop the primary key:
+
+	$schema->table('test', function() {
+		$table->dropPrimaryKey();
+	});

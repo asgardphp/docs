@@ -9,6 +9,7 @@ The DAL class lets you build queries in a object-oriented fashion.
 - [UPDATE](#update)
 - [INSERT](#insert)
 - [DELETE](#delete)
+- [Debugging](#debugging)
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework
@@ -105,6 +106,10 @@ With aliases:
 
 	$dal->orderBy('title ASC');
 
+###Group by
+
+	$dal->groupBy('id');
+
 Reverse order:
 
 	$dal->reverse();
@@ -119,12 +124,51 @@ Reverse order:
 
 This resets conditions, offset, limit and order.
 
+###Pagination
+
+	$dal->paginate($page, $per_page=10);
+
+This will only return the results of the current page.
+
+To get the paginator object ([\Asgard\Common\PaginatorInterface](docs/paginator)):
+
+	$dal->getPaginator();
+
+To set paginator factory:
+
+	$dal->setPaginatorFactory(\Asgard\Common\PaginatorFactoryInterface $paginatorFactory);
+
+###Sub-queries
+
+You can use sub-queries in conditions and jointures:
+
+	$dal->where('score > ?', new \Asgard\Db\Raw('SELECT sum(grade) FROM foo'));
+	$dal->leftjoin('bar', ['score > ?' => new \Asgard\Db\Raw('SELECT sum(grade) FROM foo')]);
+
+This will prevent the DAL from modifying your sub-query.
+
 <a name="select"></a>
 ##Select
 
 Get the results:
 
 	$dal->get();
+
+Loop through:
+
+	while($row = $dal->next())
+		//...
+	#or
+	foreach($dal as $row)
+		//...
+
+Get first:
+
+	$dal->first();
+
+Get last:
+
+	$dal->last();
 
 Count results:
 
@@ -175,27 +219,40 @@ Group by:
 
 	$dal->from('foo')->update(['title' => 'hello', 'content' => 'world']);
 
+You can also use jointures for updates:
+
+	$dal->from('foo')->leftjoin('bar', 'bar.id=foo.bar_id')->where('bar.id=1')->update([/*...*/]);
+
+*Although sqlite normally does not support deletion with jointures, the DAL makes it possible.*
+
 <a name="insert"></a>
 ##Insert
 
 	$dal->into('foo')->insert(['title' => 'hello', 'content' => 'world']);
+
+*into is only an alias of from*
 
 <a name="delete"></a>
 ##Delete
 
 	$dal->from('foo')->delete();
 
+You can also use jointures for deletions:
+
+	$dal->from('foo')->leftjoin('bar', 'bar.id=foo.bar_id')->where('bar.id=1')->delete();
+
+*Although sqlite normally does not support deletion with jointures, the DAL makes it possible.*
+
 Deleting from specific tables:
 
 	$dal->from('foo, bar, bob')->delete(['foo', 'bar']);
 
-//todo even jointures for delete/update with sqlite and others
-//dbgSelect dbgUpdate dbgDelete dbgInsert
-//raw subqueries
-//while next
-//foreach
-//reset
-//first/last
-//get
-//paginate, setPaginatorFactory, getPaginator, 
-//groupBy
+<a name="debugging"></a>
+###Debugging
+
+If you want to see the result of a query, you can use dbgSelect, dbgUpdate, dbgInsert and dbgDelete instead of their respective functions:
+
+	$dal->dbgSelect(); #SELECT FROM ..
+	$dal->dbgUpdate([/*..*/]); #UPDATE FROM ..
+	$dal->dbgDelete(); #DELETE FROM ..
+	$dal->dbgInsert([/*..*/]); #INSERT INTO ..

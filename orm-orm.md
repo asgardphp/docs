@@ -5,13 +5,15 @@ The ORM class lets you fetch, update and delete entities en masse.
 **Instantiate an entity ORM**
 
 	$orm = $dataMapper->orm('Vendor\EntityClass');
+	#or
+	\Vendor\EntityClass::orm(); #only when the entity has the orm behavior
 
 [See the datamapper documentation to create a DataMapper object](docs/orm-datamapper).
 
 <a name="query"></a>
 ##Building a query
 
-*Note: all SQL keywords must be uppercase and identifiers must start with a lowercase character.* 
+*Note: all SQL keywords must be uppercase and identifiers (columns & tables) must start with a lowercase character.* 
 
 ###Conditions (WHERE)
 
@@ -43,7 +45,7 @@ AND:
 		]
 	]);
 
-The and here is optional and can be reduced to:
+The "and" is optional here and can be reduced to:
 
 	$orm->where([
 		'foo' => 2,
@@ -61,6 +63,12 @@ Nested:
 			]
 		]
 	]);
+
+**Sub-queries**
+
+	$orm->where('score > ?', new \Asgard\Db\Raw('SELECT sum(grade) FROM foo'));
+
+This will prevent the ORM from modifying your sub-query.
 
 ###Order, limit and offset
 ***Order***

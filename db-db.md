@@ -1,12 +1,14 @@
 #DB
 
-The DB class lets you connect and query the database.
+The DB class lets you connect and query the database. It supports postgresql, mysql, sqlite and microsoft sql server.
 
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
+- [PDO and Connection](#pdoconnection)
 - [Query object](#query)
 - [Last inserted id](#id)
 - [Transactions](#transactions)
+- [Schema and dal](#schemadal)
 
 <a name="usage-asgard"></a>
 ##Usage in the Asgard Framework
@@ -21,6 +23,14 @@ In config/database.yml:
 	  database: asgard
 	  prefix:
 	  driver: mysql #this line is optional and defaults to "mysql"
+
+Or for sqlite:
+
+	database:
+	  database: :memory: #or db.sqlite
+	  driver: sqlite
+
+Driver can be: pgsql, mysql, sqlite or msssql.
 
 ###Service
 
@@ -42,9 +52,33 @@ The [container](docs/container) is often accessible as a method parameter or thr
 		'driver' => 'mysql'
 	];
 
+Or for sqlite:
+
+	$config = [
+		'database' => ':memory:', #or db.sqlite
+		'driver' => 'sqlite',
+	]
+
+Driver can be: pgsql, mysql, sqlite or msssql.
+
 ###Instance
 
 	$db = new \Asgard\Db\DB($config);
+
+<a name="pdoconnection"></a>
+##PDO and Connection
+
+Get the PDO object:
+
+	$db->getPDO();
+
+Re-build the db PDO object:
+
+	$db->buildPDO($config);
+
+Get a doctrine connection object (Doctrine\DBAL\Connection):
+
+	$db->getConn();
 
 <a name="query"></a>
 ##Query Object
@@ -95,8 +129,17 @@ Rollback
 
 	$db->rollback();
 
-//todo
-getPDO
-get symfony connection
-getSchema
-dal
+<a name="schemadal"></a>
+##Schema and DAL
+
+Get a schema object:
+
+	$schema = $db->getSchema();
+	#or
+	$schema = new \Asgard\Db\Schema($db);
+
+Get a DAL object:
+
+	$dal = $db->dal();
+	#or
+	$dal = new \Asgard\Db\DAL($db);
