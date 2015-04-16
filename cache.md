@@ -24,6 +24,8 @@ The cache is available through the service:
 
 	$cache = $container['cache'];
 
+To change, the cache driver in an Asgard application, edit the web/index.php file.
+
 <a name="usage-outside"></a>
 ##Usage outside the Asgard Framework
 

@@ -143,7 +143,7 @@ To set paginator factory:
 You can use sub-queries in conditions and jointures:
 
 	$dal->where('score > ?', new \Asgard\Db\Raw('SELECT sum(grade) FROM foo'));
-	$dal->leftjoin('bar', ['score > ?' => new \Asgard\Db\Raw('SELECT sum(grade) FROM foo')]);
+	$dal->leftjoin('bar', ['score > ?' => new \Asgard\Db\Raw('(SELECT sum(grade) FROM foo)')]);
 
 This will prevent the DAL from modifying your sub-query.
 

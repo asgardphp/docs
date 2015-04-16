@@ -66,7 +66,7 @@ Nested:
 
 **Sub-queries**
 
-	$orm->where('score > ?', new \Asgard\Db\Raw('SELECT sum(grade) FROM foo'));
+	$orm->where('score > ?', new \Asgard\Db\Raw('(SELECT sum(grade) FROM foo)'));
 
 This will prevent the ORM from modifying your sub-query.
 

@@ -9,8 +9,9 @@ Entities are elements that represent your data. Some frameworks call them models
 - [Definition](#definition)
 - [Properties](#properties)
 - [Multiple values per property](#multiple)
-- [Behaviors](#behaviors)
+- [Property hooks](#hooks)
 - [Validation](#validation)	
+- [Behaviors](#behaviors)
 - [I18N](#i18n)
 - [Serialization](#serialization)
 - [Old/New](#oldnew)
@@ -171,6 +172,25 @@ Now, $article->title will return a Asgard\Entity\ManyCollection object which can
 
 	$article->title[] = 'new title';
 	$article->title[0] //new title
+
+<a name="hooks"></a>
+##Property hooks
+
+You can set a hook for every time you update a property value:
+
+	$definition->properties = [
+	    'title' => [
+	        'hooks' => [
+	            'set' => function($value, $entity) {
+					if($value < 10)
+						$value = 10;
+					return $value;
+				}
+	        ]
+	    ]
+	]
+
+The return result will be used as the new property value.
 
 <a name="validation"></a>
 ##Validation
