@@ -3,6 +3,7 @@
 - [Core commands](#core)
   - [Compile](#compile)
   - [Console](#console)
+  - [Deploy](#deploy)
   - [Down](#down)
   - [Execute](#execute)
   - [Generate](#generate)
@@ -47,6 +48,15 @@ Interact with your application.
 Usage:
 
 	php console console
+
+<a name="deploy"></a>
+###Deploy
+
+Will install composer packages, clear cache, compile classes and execute migrations.
+
+Usage:
+
+	php console deploy
 
 <a name="down"></a>
 ###Down
