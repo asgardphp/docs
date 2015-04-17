@@ -176,3 +176,4 @@ Usage:
  * [HTTP](docs/http-commands)
  * [Migration](docs/migration-commands)
  * [ORM](docs/orm-commands)
+ * [Translation](docs/translation-commands)
