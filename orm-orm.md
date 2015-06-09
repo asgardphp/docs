@@ -2,7 +2,15 @@
 
 The ORM class lets you fetch, update and delete entities en masse.
 
-**Instantiate an entity ORM**
+- [Instantiate an entity ORM](#instantiate)
+- [Building a query](#query)
+- [Fetch results](#fetch)
+- [DAL](#dal)
+- [Update](#update)
+- [Delete](#delete)
+
+<a name="instantiate"></a>
+##Instantiate an entity ORM
 
 	$orm = $dataMapper->orm('Vendor\EntityClass');
 	#or
@@ -127,6 +135,16 @@ You can use this name/alias in the WHERE conditions and other fields. For exampl
 
 *Note that this won't eagerload related entities. For this, use "with". Jointures are only used to create conditions, modify the order, etc.*
 
+###Selects
+
+Useful for HAVING conditions or to fill entities with additional data.
+
+	$orm->addSelect('COUNT(f.id) as total');
+
+###Having
+
+	$orm->having('total > 10');
+
 ###Access through relations
 
 You can access entities directly through their relations:
@@ -215,6 +233,16 @@ Nested:
 		});
 	});
 
+###DAL Callbacks
+
+Before running a query, the ORM will construct a DAL object based on the inputs from the previous methods. If you want to customize this DAL object before running the query, you can add callbacks:
+
+	$orm->dalCallback(function($dal) {
+		$dal->addSelect('f.name');
+		$dal->leftjoin('foo f', 'f.id=p.f_id');
+	});
+
+<a name="fetch"></a>
 ##Fetch results
 
 **Get**
@@ -297,6 +325,7 @@ Group by:
 
 	$orm->avg('score', 'category_id'); #e.g. ['1'=>5, '2'=>7]
 
+<a name="dal"></a>
 ##DAL
 
 	$dal = $orm->getDAL();
@@ -307,6 +336,7 @@ For example if you need to debug the query:
 
 	echo $orm->getDAL()->dbgSelect();
 
+<a name="update"></a>
 ##Update
 
 	$orm->update(['score'=>5]);
@@ -315,6 +345,7 @@ You can of course combine it with conditions:
 
 	$orm->where('score > ?', 5)->update(['score'=>5]);
 
+<a name="delete"></a>
 ##Delete
 
 	$orm->delete();

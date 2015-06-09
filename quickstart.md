@@ -21,7 +21,7 @@ If you encounter any trouble, [please let me know](https://github.com/asgardphp/
 <a name="requirements"></a>
 ##Requirements
 * Web server, as Apache for example.
-* MySQL
+* A DBMS (mysql, sqlite, ..)
 * PHP 5.4+
 * [Composer](https://getcomposer.org/download/)
 * [Git](http://git-scm.com/downloads)
