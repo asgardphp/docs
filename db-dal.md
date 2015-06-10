@@ -147,6 +147,14 @@ You can use sub-queries in conditions and jointures:
 
 This will prevent the DAL from modifying your sub-query.
 
+###Nested DALs
+
+You can even nest DALS.
+
+	$dal->from('news')->where('id', 
+		$this->getDAL()->from('tags')->select('news_id')->where('id', 2)->limit(1)
+	)
+
 <a name="select"></a>
 ##Select
 
