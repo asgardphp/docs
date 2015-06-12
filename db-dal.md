@@ -155,6 +155,15 @@ You can even nest DALS.
 		$this->getDAL()->from('tags')->select('news_id')->where('id', 2)->limit(1)
 	)
 
+###UNIONs
+
+You can combine DALs like SQL UNION queries.
+
+	$dal->union([
+		$dal->from('news')->where('type', 'foo'),
+		$dal->from('news')->where('type', 'bar'),
+	]);
+
 <a name="select"></a>
 ##Select
 

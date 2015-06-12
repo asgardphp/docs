@@ -242,6 +242,15 @@ Before running a query, the ORM will construct a DAL object based on the inputs 
 		$dal->leftjoin('foo f', 'f.id=p.f_id');
 	});
 
+###UNIONs
+
+You can combine ORMs like SQL UNION queries.
+
+	$orm->union([
+		$dataMapper->orm('Vendor\EntityClass')->where('type', 'foo'),
+		$dataMapper->orm('Vendor\EntityClass')->where('type', 'bar'),
+	]);
+
 <a name="fetch"></a>
 ##Fetch results
 

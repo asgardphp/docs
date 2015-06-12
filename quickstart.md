@@ -208,13 +208,13 @@ For our search form we will add the following action:
 			$min = $this->form['min']->value();
 			$max = $this->form['max']->value();
 			$category = $this->form['category']->value();
-			if($term !== null)
+			if($term !== '')
 				$orm->where(['name LIKE ?'=>"%$term%"]);
-			if($min !== null)
+			if($min !== '')
 				$orm->where(['price >= ?'=>$min]);
-			if($max !== null)
+			if($max !== '')
 				$orm->where(['price <= ?'=>$max]);
-			if($category !== null)
+			if($category !== '')
 				$orm->where('category_id', $category);
 		}
 		$this->products = $orm;
