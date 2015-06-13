@@ -12,7 +12,7 @@ To install a module, run:
 
 	php console install [source=tag] --migrate --update-composer
 
-[source=tag] must be a git repository with a tag name, e.g. https://github.com/asgardmodules/admin.git=v0.1.0
+[source=tag] must be a git repository with a tag name, e.g. https://github.com/asgardmodules/admin.git=v0.2.0
 
 If the module has any module dependencies, it will install them beforehand. Then this command will download the module and copy its folders app/, migrations/, tests/, config/ web/ to your project.
 

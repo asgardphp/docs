@@ -14,7 +14,7 @@ The admin module helps you create an administration that you can easily extend a
 
 Go to your project directory and run:
 
-	php console install git@github.com:asgardmodules/admin.git=v0.1.0 --migrate --update-composer
+	php console install git@github.com:asgardmodules/admin.git=v0.2.0 --migrate --update-composer
 
 This will add the files for the administration, migrate your database and update composer dependencies.
 
