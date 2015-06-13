@@ -32,9 +32,7 @@ Asgard autoloader however does it if you enable it:
 	$autoloader->nestedNamespace(true);
 
 <a name="global-classes"></a>
-##Global classes
-
-//todo global replaced with search
+##Search classes
 
 When using a class without namespace, the autoloader will search for the class in the existing or registered ones whose class name is the same.
 
@@ -42,18 +40,16 @@ For example if the class \Namespace\Class exists or is registered via $autoloade
 
 To enable it:
 
-	$autoloader->global(true);
+	$autoloader->search(true);
 
-By combining global and nestedNamespace, the autoloader will be able to match classes like \Namespace\Class to \Anothernamespace\Class if it has to. However it is recommended to use class mapping for better performances.
+By combining search and nestedNamespace, the autoloader will be able to match classes like \Namespace\Class to \Anothernamespace\Class if it has to. However it is recommended to use class mapping for better performances.
 
 <a name="namespace-mapping"></a>
 ##Namespace mapping
 
-//todo mapNamespace replaced with namespaceMap
-
 Like with composer, you can map a namespace to a specific directory:
 
-	$autoloader->mapNamespace('Namespace', 'myclasses/');
+	$autoloader->namespaceMap('Namespace', 'myclasses/');
 
 <a name="class-mapping"></a>
 ##Class mapping
@@ -65,9 +61,11 @@ Like the composer autoloader, you can map a class to a specific file:
 <a name="preloading-files"></a>
 ##Preloading files
 
-//todo preload is only to enable preload. Need to call preloadDir preloadFile
+To enable or disable preloading:
 
-You can ask the autoloader to analyse a folder's files whose names start with a capital to help it find global classes:
+	$autoloader->preload(true); #or false
+
+You can then ask the autoloader to analyse a folder's files whose names start with a capital to help it find global classes:
 
 	$autoloader->preloadDir('classes/');
 
