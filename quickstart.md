@@ -179,7 +179,7 @@ Everything can be modified directly in app/Catalog/Controllers/ProductController
 ###Debugging under Asgard
 As you already have made modifications to the code, you might have already come across the debugging screen. If not, add some invalid code to app/Catalog/html/index.php and see what happens when you refresh your products page.
 
-Besides the error message, you get the full backtrace with the code excerpts and arguments. To access specific files and lines of code in a single click, open config/config.yml and replace the "debug_url" value. You will also have to register the protocol handler ([how to on windows](http://msdn.microsoft.com/en-us/library/ie/aa767914(v=vs.85).aspx)).
+Besides the error message, you get the full backtrace with the code excerpts and arguments. To access specific files and lines of code in a single click, open config/config.yml and replace the "debug_url" value. You will also have to register the protocol handler (for sublime text2: [on windows](https://github.com/ktunkiewicz/subl-handler), [on osx](https://github.com/asuth/subl-handler)).
 
 <a name="search"></a>
 ##Search form
