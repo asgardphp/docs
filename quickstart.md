@@ -102,7 +102,7 @@ The default view is pretty simple and a bit boring.. but we can improve it and r
 
 	<?php foreach($list as $news): ?>
 	<h2><?=$news?></h2>
-	<p><?=substr($news->content, 100).'...'?></p>
+	<?=\Asgard\Common\Tools::truncateHTML($news->content, 100, '..')?>
 	<a href="<?=$news->url()?>">Read more</a>
 	<hr>
 	<?php endforeach; ?>
@@ -127,7 +127,6 @@ To make things faster, Asgard provides a tool that will generate most of the cod
 	        category:
 	          type: entity
 	          entity: Catalog\Entities\Category
-	          has: one
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
 	      front: true
@@ -139,7 +138,7 @@ To make things faster, Asgard provides a tool that will generate most of the cod
 	        products:
 	          type: entity
 	          entity: Catalog\Entities\Product
-	          has: many
+	          many: true
 	  admin:
 	    entities:
 	      Product:
@@ -208,13 +207,13 @@ For our search form we will add the following action:
 			$min = $this->form['min']->value();
 			$max = $this->form['max']->value();
 			$category = $this->form['category']->value();
-			if($term !== '')
+			if($term !== null)
 				$orm->where(['name LIKE ?'=>"%$term%"]);
-			if($min !== '')
+			if($min !== null)
 				$orm->where(['price >= ?'=>$min]);
-			if($max !== '')
+			if($max !== null)
 				$orm->where(['price <= ?'=>$max]);
-			if($category !== '')
+			if($category !== null)
 				$orm->where('category_id', $category);
 		}
 		$this->products = $orm;
@@ -295,7 +294,7 @@ Then let's go back to our ProductController, to modify the showAction:
 		if(!($this->product = \Catalog\Entities\Product::load($request['id'])))
 			$this->notfound();
 
-		$review = new \Catalog\Entities\Review(['product_id'=>$this->product->id]);
+		$review = new \Catalog\Entities\Review(['product'=>$this->product->id]);
 		$this->form = $this->container->make('entityForm', [$review]);
 		if($this->form->sent()) {
 			try {
