@@ -334,6 +334,13 @@ Group by:
 
 	$orm->avg('score', 'category_id'); #e.g. ['1'=>5, '2'=>7]
 
+###Custom query
+
+You can also use a custom SQL query:
+
+	$orm->query('SELECT * FROM member WHERE id=?', [$id]);
+	$members = $orm->get();
+
 <a name="dal"></a>
 ##DAL
 
