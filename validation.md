@@ -407,6 +407,13 @@ If a rule is not found, it will throw an exception.
 	
 	Validator::max(10)
 
+**Not**: return the opposite result
+	
+	Validator::not(Validator::max(10))
+	Validator::not_max(10)
+
+When using the second solution, you can set the messages but using the name "not_max".
+
 **Regex**: the input must match the given pattern
 	
 	Validator::regex('/^[a-z]+$/')
