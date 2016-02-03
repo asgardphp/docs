@@ -93,7 +93,7 @@ The Viewable trait provides the methods so that a class can easily be rendered w
 	#the engine will be passed to any template used by the class
 	#$abc->getTemplateEngine(); to get the engine
 
-	$abc->run('test', ['param1', 'param2']);
+	$abc->fragment('test', ['param1', 'param2']);
 
 ###Rendering
 There are many ways a method can render the result.
@@ -101,22 +101,22 @@ There are many ways a method can render the result.
 	public function test() {
 		return 'test';
 	}
-	#run('test') returns 'test'
+	#fragment('test') returns 'test'
 
 	public function test() {
 		echo 'test';
 	}
-	#run('test') returns 'test'
+	#fragment('test') returns 'test'
 
 	public function test() {
 		return new MyTemplate('template.php', [/*..*/]);
 	}
-	#run('test') will call ->render() on the template and return the result
+	#fragment('test') will call ->render() on the template and return the result
 
 	public function test() {
 		$this->view = new MyTemplate('template.php', [/*..*/]);
 	}
-	#run('test') will call ->render() on $this->view and return the result
+	#fragment('test') will call ->render() on $this->view and return the result
 
 	public function test() {
 		$this->view = 'template';
@@ -153,4 +153,4 @@ You can help the viewable object solves the template file with:
 
 ###Static rendering
 
-	Abc::fragment('tes', [$param1, ...]);
+	Abc::sFragment('tes', [$param1, ...]);
