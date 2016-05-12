@@ -4,6 +4,7 @@ The DAL class lets you build queries in a object-oriented fashion.
 
 - [Usage in the Asgard Framework](#usage-asgard)
 - [Usage outside the Asgard Framework](#usage-outside)
+- [Identifiers and keywords](#identifiers)
 - [Build a query](#query)
 - [SELECT](#select)
 - [UPDATE](#update)
@@ -26,6 +27,27 @@ The [container](docs/container) is often accessible as a method parameter or thr
 	$dal = new \Asgard\Db\DAL($db);
 	#or
 	$dal = $db->dal();
+
+<a name="identifiers"></a>
+##Identifiers and keywords
+
+Identifiers like table and column names are automatically encapsulated in quotes. The default table name is automatically added to column identifiers that have no table name.
+
+Identifiers, keywords and aliases are identified according to these rules:
+
+- Identifiers: starts with a lowercase character (name, nAme, na_me, ..)
+- Aliases: must start with an uppercase character (Alias, ..)
+- Keywords: must be all uppercase (LIKE, IS, NOW, ..)
+
+For example:
+
+	SELECT name Na FROM table WHERE Na = ? ORDER BY id ASC
+
+with the parameter: 'test'
+
+The DAL will transform this query into:
+
+	SELECT `name` `Na` FROM `table` WHERE `Na` = 'test' ORDER BY `table`.`id` ASC
 
 <a name="query"></a>
 ##Building a query
@@ -84,7 +106,7 @@ Multiple tables, separated by a comma:
 
 With aliases:
 
-	$dal->from('foo f, bar b');
+	$dal->from('foo Fo, bar Ba');
 
 ###Selecting columns
 
@@ -92,7 +114,7 @@ With aliases:
 
 With aliases:
 
-	$dal->select('title as t, id as i, content as c');
+	$dal->select('title as Ti, id as Id, content as Co');
 
 ###Offset
 
@@ -247,7 +269,7 @@ You can also use jointures for updates:
 
 	$dal->into('foo')->insert(['title' => 'hello', 'content' => 'world']);
 
-*into is only an alias of from*
+*into() is an alias of from()*
 
 <a name="delete"></a>
 ##Delete

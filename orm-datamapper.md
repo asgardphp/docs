@@ -30,15 +30,15 @@ Check if the entity has already been persisted
 
 Load an entity with a given id
 
-	$post = $dm->load('Blog\Entities\Post', 3);
+	$post = $dm->load('Blog\Entity\Post', 3);
 
 Load all entities
 
-	$posts = $dm->all('Blog\Entities\Post');
+	$posts = $dm->all('Blog\Entity\Post');
 
 Destroy all entities
 
-	$dm->destroyAll('Blog\Entities\Post');
+	$dm->destroyAll('Blog\Entity\Post');
 
 Destroy an entity
 
@@ -46,7 +46,7 @@ Destroy an entity
 
 Create and persist a new entity
 
-	$post = $dm->create('Blog\Entities\Post', ['title'=>'hello!'], $validationGroups=[]);
+	$post = $dm->create('Blog\Entity\Post', ['title'=>'hello!'], $validationGroups=[]);
 
 Validation groups ($validationGroups) define the set of rules to apply to the validation. [See the validation documenatation.](docs/validation)
 
@@ -64,7 +64,7 @@ Persist an entity
 
 Get the entity ORM for specific queries
 
-	$dm->orm('Blog\Entities\Post');
+	$dm->orm('Blog\Entity\Post');
 
 Get an entity's relation ORM
 

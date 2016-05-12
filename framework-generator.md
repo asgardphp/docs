@@ -53,7 +53,7 @@ Please refer to the [entity documentation](docs/entity).
 	          web: true
 	        category:
 	          type: entity
-	          entity: Bundle1\Entities\Category
+	          entity: Bundle1\Entity\Category
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
 	    Category:
@@ -63,10 +63,10 @@ Please refer to the [entity documentation](docs/entity).
 	        name:
 	        products:
 	          type: entity
-	          entity: Bundle1\Entities\Product
+	          entity: Bundle1\Entity\Product
 	          many: true
 
-This will generate the following entities, in app/Bundle1/Entities/Product.php:
+This will generate the following entities, in app/Bundle1/Entity/Product.php:
 
 	<?php
 	namespace Bundle1\Entities;
@@ -90,7 +90,7 @@ This will generate the following entities, in app/Bundle1/Entities/Product.php:
 				],
 				'category' => [
 					'type' => 'entity',
-					'entity' => 'Bundle1\Entities\Category',
+					'entity' => 'Bundle1\Entity\Category',
 				]
 			];
 		}
@@ -100,11 +100,11 @@ This will generate the following entities, in app/Bundle1/Entities/Product.php:
 		}
 
 		public function url() {
-			return $this->getDefinition()->getContainer()['resolver']->url(['Bundle1\Controllers\ProductController', 'show'], array('id'=>$this->id));
+			return $this->getDefinition()->getContainer()['resolver']->url(['Bundle1\Controller\ProductController', 'show'], array('id'=>$this->id));
 		}
 	}
 
-And app/Bundle1/Entities/Category.php
+And app/Bundle1/Entity/Category.php
 
 	<?php
 	namespace Bundle1\Entities;
@@ -117,7 +117,7 @@ And app/Bundle1/Entities/Category.php
 				],
 				'products' => [
 					'type' => 'entity',
-					'entity' => 'Bundle1\Entities\Product',
+					'entity' => 'Bundle1\Entity\Product',
 					'many' => true,
 				]
 			];
@@ -128,7 +128,7 @@ And app/Bundle1/Entities/Category.php
 		}
 
 		public function url() {
-			return $this->getDefinition()->getContainer()['resolver']->url(['Bundle1\Controllers\CategoryController', 'show'], array('id'=>$this->id));
+			return $this->getDefinition()->getContainer()['resolver']->url(['Bundle1\Controller\CategoryController', 'show'], array('id'=>$this->id));
 		}
 	}
 
@@ -153,10 +153,10 @@ You can choose to generate only one action in the front controller:
 	    Product:
 	      front: [index] #or: front: [show]
 
-This will generate the following controller in app/Bundle1/Controllers/ProductController.php:
+This will generate the following controller in app/Bundle1/Controller/Product.php:
 
 	<?php
-	namespace Bundle1\Controllers;
+	namespace Bundle1\Controller;
 
 	/**
 	 * @Prefix("products")
@@ -167,7 +167,7 @@ This will generate the following controller in app/Bundle1/Controllers/ProductCo
 		 */
 		public function indexAction(\Asgard\Http\Request $request) {
 			$page = $request->get['page'] ? $request->get['page']:1;
-			$orm = \Bundle1\Entities\Product::paginate($page, 10);
+			$orm = \Bundle1\Entity\Product::paginate($page, 10);
 			$this->products = $orm->get();
 			$this->paginator = $orm->getPaginator();
 		}
@@ -176,7 +176,7 @@ This will generate the following controller in app/Bundle1/Controllers/ProductCo
 		 * @Route(":id")
 		 */
 		public function showAction(\Asgard\Http\Request $request) {
-			if(!($this->product = \Bundle1\Entities\Product::load($request['id'])))
+			if(!($this->product = \Bundle1\Entity\Product::load($request['id'])))
 				$this->notfound();
 		}
 	}
@@ -192,8 +192,8 @@ Please refer to the [controllers documentation](docs/http-controllers).
 
 This will generate the controllers:
 
-- app/Bundle1/Controllers/Controller1.php
-- app/Bundle1/Controllers/Controller2.php
+- app/Bundle1/Controller/Controller1.php
+- app/Bundle1/Controller/Controller2.php
 
 ####Controller definitions
 
@@ -218,7 +218,7 @@ For each action you can provide the route, the template file and the source file
 The previous instructions will generate the controller as following:
 
 	<?php
-	namespace \Bundle1\Controllers;
+	namespace \Bundle1\Controller;
 
 	/**
 	 * @Prefix("members")
@@ -266,7 +266,7 @@ The instructions must be written in a YAML file. For example:
 	          web: true
 	        category:
 	          type: entity
-	          entity: Bundle1\Entities\Category
+	          entity: Bundle1\Entity\Category
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
 	      front: true
@@ -277,7 +277,7 @@ The instructions must be written in a YAML file. For example:
 	        name:
 	        products:
 	          type: entity
-	          entity: Bundle1\Entities\Product
+	          entity: Bundle1\Entity\Product
 	          many: true
 		controllers:
 		  Member:

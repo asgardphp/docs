@@ -39,7 +39,7 @@ The [container](docs/container) is often accessible as a method parameter or thr
 		// ...
 	});
 
-The first parameter is always a \Asgard\Hook\HooksChain object. The next ones are passed when the hook is triggered.
+The first parameter is always a \Asgard\Hook\HookChain object. The next ones are passed when the hook is triggered.
 
 <a name="trigger"></a>
 ##Trigger a hook
@@ -94,14 +94,14 @@ Here we provide a reference to retrieve the chain object and its executed proper
 
 <a name="hookscontainer"></a>
 ##HooksContainer
-A HooksContainer is a class containing hooks. It extends Asgard\Hook\HooksContainer and contains methods that are matched to hooks with annotations.
+A HooksContainer is a class containing hooks. It extends Asgard\Hook\HookContainer and contains methods that are matched to hooks with annotations.
 
 Example:
 
 	<?php
-	namespace Bundle\Hooks;
+	namespace Bundle\Hook;
 
-	class SomeHooks extends \Asgard\Hook\HooksContainer {
+	class SomeHooks extends \Asgard\Hook\HookContainer {
 		/**
 		 * @Hook("Asgard.Http.Start")
 		 */
@@ -112,10 +112,10 @@ Example:
 
 Here the method start is executed when the hook "Asgard.Http.Start" is triggered.
 
-If you are working with a Asgard project, all HooksContainer in the Hooks/ folder of a bundle are automatically loaded.
+If you are working with a Asgard project, all HooksContainer in the Hook/ folder of a bundle are automatically loaded.
 
 If not, you can register the hooks with:
 
 	$annotationsReader = new \Asgard\Hook\AnnotationReader;
-	$hooks = $annotationsReader->fetchHooks('Bundle\Hooks\SomeHooks');
+	$hooks = $annotationsReader->fetchHooks('Bundle\Hook\SomeHooks');
 	$hookManager->hooks($hooks);

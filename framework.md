@@ -78,10 +78,10 @@ It is divided into bundles, including the bundle "General" which contains the de
 ###Structure
 A bundle typically consists of:
 
-	Controllers/	contains [HTTP controllers](docs/http-controllers)
-	Entities/		contains [entities](docs/entity)
+	Controller/	contains [HTTP controllers](docs/http-controllers)
+	Entity/		contains [entities](docs/entity)
 	html/			contains the [controllers views](docs/http-controllers#views)
-	Hooks/			contains the [hooks containers/](docs/hook#hookscontainer)
+	Hook/			contains the [hooks containers/](docs/hook#hookscontainer)
 	translation/	contains the translation files
 	Bundle.php
 

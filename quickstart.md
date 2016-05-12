@@ -90,13 +90,13 @@ For now let's just look at app/, which contains your application. Your applicati
 
 If you dive in app/Admin/ you will see that a typical bundle is made of:
 
-* Controllers/ (the logic, handles the requests)
-* Entities/ (data entities)
+* Controller/ (the logic, handles the requests)
+* Entity/ (data entities)
 * translations/ (translations)
 * html/ (contains your html templates)
 * Bundle.php (initialization functions)
 
-If you now open app/News/Controllers/NewsController.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open html/news/index.php
+If you now open app/News/Controller/News.php, you can see how the requests are handled and notice how the annotated routes work. But for now let's only focus on the views and open html/news/index.php
 
 The default view is pretty simple and a bit boring.. but we can improve it and replace it with:
 
@@ -107,7 +107,7 @@ The default view is pretty simple and a bit boring.. but we can improve it and r
 	<hr>
 	<?php endforeach; ?>
 
-Refresh, and voilà! By the way, have you noticed how we can easily print the news page url? This function is defined in Entities/News.php.
+Refresh, and voilà! By the way, have you noticed how we can easily print the news page url? This function is defined in Entity/News.php.
 
 <a name="bundle"></a>
 ##Building a bundle
@@ -126,7 +126,7 @@ To make things faster, Asgard provides a tool that will generate most of the cod
 	          web: true
 	        category:
 	          type: entity
-	          entity: Catalog\Entities\Category
+	          entity: Catalog\Entity\Category
 	      behaviors:
 	        \Asgard\Behaviors\SortableBehavior:
 	      front: true
@@ -137,7 +137,7 @@ To make things faster, Asgard provides a tool that will generate most of the cod
 	        name:
 	        products:
 	          type: entity
-	          entity: Catalog\Entities\Product
+	          entity: Catalog\Entity\Product
 	          many: true
 	  admin:
 	    entities:
@@ -173,7 +173,7 @@ Anyway, let's play with our new catalog and add some products in [http://localho
 Now that you have filled up your catalog, let's have a look at the front-office: [http://localhost/asgard/web/products](http://localhost/asgard/web/products)
 See? All your newly created products with their own individual page.
 
-Everything can be modified directly in app/Catalog/Controllers/ProductController.php and app/Catalog/html/.
+Everything can be modified directly in app/Catalog/Controller/Product.php and app/Catalog/html/.
 
 ###Debugging under Asgard
 As you already have made modifications to the code, you might have already come across the debugging screen. If not, add some invalid code to app/Catalog/html/index.php and see what happens when you refresh your products page.
@@ -182,7 +182,7 @@ Besides the error message, you get the full backtrace with the code excerpts and
 
 <a name="search"></a>
 ##Search form
-We now want to be able to let our visitors search through our catalog. For that, we will have to modify our controller, so open Catalog/Controllers/ProductController.php
+We now want to be able to let our visitors search through our catalog. For that, we will have to modify our controller, so open Catalog/Controller/Product.php
 
 So far the controller only has 2 actions. An action handles specific requests. indexAction handles requests going to "products/index" while showAction handles requests to "products/:id", :id being the identifier of the product.
 
@@ -193,15 +193,15 @@ For our search form we will add the following action:
 	 */
 	public function searchAction($request) {
 		$this->form = $this->container->make('form', ['search']);
-		$this->form['term'] = new \Asgard\Form\Fields\TextField();
-		$this->form['min'] = new \Asgard\Form\Fields\TextField();
-		$this->form['max'] = new \Asgard\Form\Fields\TextField();
+		$this->form['term'] = new \Asgard\Form\Field\TextField();
+		$this->form['min'] = new \Asgard\Form\Field\TextField();
+		$this->form['max'] = new \Asgard\Form\Field\TextField();
 		$choices = [];
-		foreach(\Catalog\Entities\Category::orm() as $category)
+		foreach(\Catalog\Entity\Category::orm() as $category)
 			$choices[$category->id] = (string)$category;
-		$this->form['category'] = new \Asgard\Form\Fields\SelectField(['choices' => $choices]);
+		$this->form['category'] = new \Asgard\Form\Field\SelectField(['choices' => $choices]);
 
-		$orm = \Catalog\Entities\Product::orm();
+		$orm = \Catalog\Entity\Product::orm();
 		if($this->form->sent()) {
 			$term = $this->form['term']->value();
 			$min = $this->form['min']->value();
@@ -239,9 +239,9 @@ That's it for the action so let's now move to the view in Catalog/html/product/s
 
 	<?php foreach($products as $product): ?>
 	<p>
-	    <b><?=$product?></b><br>
-	    Price: <?=$product->price?><br>
-	    Category: <?=$product->category?>
+		<b><?=$product?></b><br>
+		Price: <?=$product->price?><br>
+		Category: <?=$product->category?>
 	</p>
 	<?php endforeach ?>
 
@@ -251,10 +251,10 @@ First we display the form we have constructed in the action, then we display wit
 ##Products reviews
 The final addition to our website will be a review system for our products. For that we will modify the action showAction to make a form to add reviews, and display them.
 
-But before, let's create the Review entity in Catalog/Entites/Review.php:
+But before, let's create the Review entity in Catalog/Entity/Review.php:
 
 	<?php
-	namespace Catalog\Entities;
+	namespace Catalog\Entity;
 
 	class Review extends \Asgard\Entity\Entity {
 		public static function definition(\Asgard\Entity\Definition $definition) {
@@ -264,20 +264,20 @@ But before, let's create the Review entity in Catalog/Entites/Review.php:
 				'rating' => 'integer',
 				'product' => [
 					'type' => 'entity',
-					'entity' => 'Catalog\Entities\Product'
+					'entity' => 'Catalog\Entity\Product'
 				]
 			];
-		}
+		}   
 	}
 
-and modify Catalog/Entites/Product.php's properties:
+and modify Catalog/Entity/Product.php's properties:
 
 	$definition->properties = [
 		//...
 		'reviews' => [
 			'type' => 'entity',
-			'entity' => 'Catalog\Entities\Review',
 			'many' => true,
+			'entity' => 'Catalog\Entity\Review'
 		]
 	];
 
@@ -291,16 +291,16 @@ Then let's go back to our ProductController, to modify the showAction:
 	 * @Route(":id")
 	 */
 	public function showAction(\Asgard\Http\Request $request) {
-		if(!($this->product = \Catalog\Entities\Product::load($request['id'])))
+		if(!($this->product = \Catalog\Entity\Product::load($request['id'])))
 			$this->notfound();
 
-		$review = new \Catalog\Entities\Review(['product'=>$this->product->id]);
+		$review = new \Catalog\Entity\Review(['product' => \Catalog\Entity\Product::load($this->product->id)]);
 		$this->form = $this->container->make('entityForm', [$review]);
 		if($this->form->sent()) {
 			try {
 				$this->form->save();
 				$this->form->reset();
-				$this->getFlash()->addSuccess('Your review was posted with success.');
+				$this->getFlash()->addSuccess('Your review was posted with success. Thank you.');
 			} catch(\Asgard\Form\FormException $e) {
 				$this->getFlash()->addError($e->errors);
 			}
@@ -366,13 +366,13 @@ This created the file tests/AppTest.php with the newly generated tests. Within t
 But to make it more useful, let's replace it with:
 
 	#Fixtures
-	$cat1 = \Catalog\Entities\Category::create(['id'=>4, 'name'=>'BarCat']);
-	$cat2 = \Catalog\Entities\Category::create(['id'=>5, 'name'=>'BarCat']);
-	\Catalog\Entities\Product::create(['name'=>'foo', 'price'=>15, 'category'=>4]); #in
-	\Catalog\Entities\Product::create(['name'=>'foooooo', 'price'=>5, 'category'=>4]); #not in
-	\Catalog\Entities\Product::create(['name'=>'foobar', 'price'=>17, 'category'=>4]); #in
-	\Catalog\Entities\Product::create(['name'=>'bar', 'price'=>13, 'category'=>4]); #not in
-	\Catalog\Entities\Product::create(['name'=>'foofoo', 'price'=>13, 'category'=>5]); #not in
+	$cat1 = \Catalog\Entity\Category::create(['id'=>4, 'name'=>'BarCat']);
+	$cat2 = \Catalog\Entity\Category::create(['id'=>5, 'name'=>'BarCat']);
+	\Catalog\Entity\Product::create(['name'=>'foo', 'price'=>15, 'category'=>$cat1]); #in
+	\Catalog\Entity\Product::create(['name'=>'foooooo', 'price'=>5, 'category'=>$cat1]); #not in
+	\Catalog\Entity\Product::create(['name'=>'foobar', 'price'=>17, 'category'=>$cat1]); #in
+	\Catalog\Entity\Product::create(['name'=>'bar', 'price'=>13, 'category'=>$cat1]); #not in
+	\Catalog\Entity\Product::create(['name'=>'foofoo', 'price'=>13, 'category'=>$cat2]); #not in
 
 	#Browser
 	$browser = $this->createBrowser();

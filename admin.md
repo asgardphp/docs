@@ -23,16 +23,16 @@ This will add the files for the administration, migrate your database and update
 
 ```text
 app/Admin/
-	Controllers/
-		AdministratorAdminController.php	#To manage administrators
-		DefaultAdminController.php			#index and 404 actions
-		FilesController.php					#manage entity files
-		LoginController.php					#login and password forgotten actions
-		PreferencesAdminController.php		#manage preferences
-	Entities/
+	Controller/
+		AdministratorAdmin.php	#To manage administrators
+		DefaultAdmin.php			#index and 404 actions
+		Files.php					#manage entity files
+		Login.php					#login and password forgotten actions
+		PreferencesAdmin.php		#manage preferences
+	Entity/
 		Administrator.php					#Administrator entity
 	generator/*
-	Hooks/
+	Hook/
 		GeneratorHooks.php					#Generator hooks
 		NotfoundHooks.php					#404 error hook
 	html/
@@ -51,8 +51,8 @@ app/Admin/
 			form.php						#preferences form template
 	Libs/
 		Controller/
-			AdminParentController.php		#Parent for all administration controllers
-			EntityAdminController.php		#Parent for all entity administration controllers
+			AdminParent.php		#Parent for all administration controllers
+			EntityAdmin.php		#Parent for all entity administration controllers
 		Form/
 			Fields/*						#Form fields for administration
 			Widgets/*						#Form widgets for administration
@@ -83,13 +83,13 @@ By default, you can manage administrators in Configuration > Administrators and 
 If you already have an entity that you want to be administrable, you can create an admin controller as following:
 
 	<?php
-	namespace Article\Controllers;
+	namespace Article\Controller;
 
 	/**
 	 * @Prefix("admin/articles")
 	 */
 	class ArticleAdminController extends \Admin\Libs\Controller\EntityAdminController {
-		protected $_entity = 'Article\Entities\Article';
+		protected $_entity = 'Article\Entity\Article';
 		protected $_singular = 'article';
 		protected $_plural = 'articles';
 
@@ -165,7 +165,7 @@ To customize the administration menus, add the following code in a bundle's run 
 
 	$container['adminMenu']->add([
 		'label' => __('News'),
-		'link' => $chain->container['resolver']->url_for(['News\Controllers\NewsAdminController', 'index']),
+		'link' => $chain->container['resolver']->url_for(['News\Controller\NewsAdminController', 'index']),
 	], '0.');
 
 The last parameter gives the position of the item. This item will be in the first sub-menu of the navigation bar (Content). '0', would have replaced the "Content" item, while '0.' adds the item into the "Content" menu.
@@ -174,7 +174,7 @@ The last parameter gives the position of the item. This item will be in the firs
 
 	$container['adminMenu']->addHome([
 		'img' => $request->url->to('news/icon.svg'),
-		'link' => $chain->container['resolver']->url_for(['News\Controllers\NewsAdminController', 'index']),
+		'link' => $chain->container['resolver']->url_for(['News\Controller\NewsAdminController', 'index']),
 		'title' => __('News'),
 		'description' => __('All the news.')
 	]);

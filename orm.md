@@ -14,7 +14,7 @@ The ORM package gives you the possibility to store, fetch, search entities and d
 To define relations between entities, please read [ORM Relations](docs/orm-relations).
 
 	<?php
-	namespace Blog\Entities\Post;
+	namespace Blog\Entity\Post;
 
 	class Post extends \Asgard\Entity\Entity {
 		public static function definition(\Asgard\Entity\Definition $definition) {
@@ -23,7 +23,7 @@ To define relations between entities, please read [ORM Relations](docs/orm-relat
 				'content',
 				'tags' => [
 					'type' => 'entity',
-					'entity' => 'Blog\Entities\Tag',
+					'entity' => 'Blog\Entity\Tag',
 					'many'    => true
 				],
 			];

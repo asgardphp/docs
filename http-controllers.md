@@ -8,7 +8,7 @@
 
 <a name="validator"></a>
 ##Construction
-A controller class name must follow the pattern NameController. With Asgard Framework, stores them in the bundle Controllers/ folder for automatic loading.
+A controller class name must follow the pattern NameController. With Asgard Framework, stores them in the bundle Controller/ folder for automatic loading.
 
 The controller class is composed of actions. Each action handles a specific request. For example:
 
@@ -30,7 +30,7 @@ You can use the resolver to route requests to specific actions. In Asgard, the r
 
 To create a new route, open app app/start.php and add for example:
 
-	$resolver->route('products', 'Products\Controllers\ProductController::index');
+	$resolver->route('products', 'Products\Controller\ProductController::index');
 	#or
 	$resolver->route('products', function(\Asgard\Http\Request $request) {
 		//...
@@ -38,7 +38,7 @@ To create a new route, open app app/start.php and add for example:
 
 To route only specific HTTP methods, use the 3rd argument:
 
-	$resolver->route('products', 'Products\Controllers\ProductController::index', ['post', 'put']);
+	$resolver->route('products', 'Products\Controller\ProductController::index', ['post', 'put']);
 
 ###Annotated Routes
 To ease the development you can use annotations in your controllers as following:
@@ -149,11 +149,11 @@ The "after" methods of filters are executed after the action (or the "before" me
 ###Default views
 In Asgard, when a controller action is executed and does not provide its own view, the controller will try to automatically generate the view. 
 
-When a controller is located in the Controllers folder of a bundle, it will search for views in the bundle views/ folder. For example if the ProductController class is in bundle/Controllers/ProductController.php, and its action indexAction is executed, it will look for the view in bundle/views/product/index.php. If it exists it will use it to construct the response, otherwise the response will be empty.
+When a controller is located in the Controllers folder of a bundle, it will search for views in the bundle views/ folder. For example if the ProductController class is in bundle/Controller/Product.php, and its action indexAction is executed, it will look for the view in bundle/views/product/index.php. If it exists it will use it to construct the response, otherwise the response will be empty.
 
 Before generating the view, the controller will extract all its properties into variables and pass them to the view. Hence, $this->header in the controller becomes $header in the php view file:
 
-	#bundle/Controllers/ProductController.php
+	#bundle/Controller/Product.php
 	public function indexAction(\Asgard\Http\Request $request) {
 		$this->header = '<h1>Procucts</h1>';
 	}
@@ -175,7 +175,7 @@ You can also provide your own views. To do that you need to create a new class w
 
 and return it in the action:
 
-	#bundle/Controllers/ProductController.php
+	#bundle/Controller/Product.php
 	public function indexAction(\Asgard\Http\Request $request) {
 		return new MyView('index.template', ['header'=>'Products']);
 	}

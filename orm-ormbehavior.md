@@ -34,27 +34,27 @@ In the entity definition method
 
 Load by a specific property
 
-	$post = Blog\Entities\Post::loadBy('title', 'hello!');
+	$post = Blog\Entity\Post::loadBy('title', 'hello!');
 
 Load an entity with a given id
 
-	$post = Blog\Entities\Post::load(4);
+	$post = Blog\Entity\Post::load(4);
 
 Get the ORM for specific queries
 
-	$orm = Blog\Entities\Post::orm();
+	$orm = Blog\Entity\Post::orm();
 
 Destroy all entities
 
-	Blog\Entities\Post::destroyAll();
+	Blog\Entity\Post::destroyAll();
 
 Destroy an entity
 
-	Blog\Entities\Post::destroy($post);
+	Blog\Entity\Post::destroy($post);
 
 Create an entity
 
-	$post = Blog\Entities\Post::create(['title'=>'hello!', $validationGroups=[]]);
+	$post = Blog\Entity\Post::create(['title'=>'hello!', $validationGroups=[]]);
 
 Validation groups ($validationGroups) define the set of rules to apply to the validation. [See the validation documenatation.](docs/validation)
 
@@ -93,8 +93,8 @@ To get an entity associated entities
 
 Instead of passing by the orm like
 
-	$post = Blog\Entities\Post::orm()->where('id', 1)->first();
+	$post = Blog\Entity\Post::orm()->where('id', 1)->first();
 
 You can skip orm() and directly make static calls with the entity class
 
-	$post = Blog\Entities\Post::where('id', 1)->first();
+	$post = Blog\Entity\Post::where('id', 1)->first();
