@@ -22,7 +22,7 @@ If you encounter any trouble, [please let me know](https://github.com/asgardphp/
 ##Requirements
 * Web server, as Apache for example.
 * A DBMS (mysql, sqlite, ..)
-* PHP 5.4+
+* PHP 5.5.9+
 * [Composer](https://getcomposer.org/download/)
 * [Git](http://git-scm.com/downloads)
 * PHPUnit (last section only)
